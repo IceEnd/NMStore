@@ -6,11 +6,14 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var connect = require('connect');
+var fs = require('fs');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+var accessLogStream = fs.createWriteStream(__dirname + '/logs/access.log', {flags: 'a'})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -65,6 +68,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
+app.use(logger('combined', {stream: accessLogStream}));
 
 module.exports = app;
 app.listen(3000);
