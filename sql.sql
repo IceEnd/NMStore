@@ -1,42 +1,3 @@
-{
-    "_id" : ObjectId("56f34e875110c39681681f7b"),
-    "user_id" : 1,
-    "username" : "lavender_eacho",
-    "goods_id" : [ 
-        1, 
-        2
-    ],
-    "goods_name" : [ 
-        "肥皂", 
-        "鼠标"
-    ],
-    "goods_amount" : [ 
-        12, 
-        2
-    ],
-    "goods_date" : [ 
-        "2016-03-24 08:00", 
-        "2016-03-23 08:11"
-    ]
-}
-
-
-{
-    "_id" : ObjectId("56f349b65110c39681681f7a"),
-    "good_id" : 1,
-    "name" : "香皂",
-    "price" : 12.5,
-    "stock" : 100,
-    "introduce" : "搞基必备工具",
-    "picture" : "https://blog.coolecho.net",
-    "source" : "山东烟卷厂",
-    "manager" : "Cononico",
-    "manager_id" : 1,
-    "date" : "2016-03-24 09:57",
-    "number" : 20,
-    "coat" : 10
-}
-
 //mysql
 use nmstore;
 CREATE table store(
@@ -46,9 +7,10 @@ CREATE table store(
     username VARCHAR(20) NOT NULL,
     idcard VARCHAR(18) NOT NULL,
     phone VARCHAR(20) NOT NULL,
-    state INT NOT NULL,
+    store_state INT NOT NULL,
     address VARCHAR(50) NOT NULL,
-    date DATE NOT NULL,
+	store_img varchar(100),
+    store_date DATE NOT NULL,
     primary key (store_id)
 );
 
@@ -75,6 +37,25 @@ create table store_users(
     primary key(su_id)
 )
 
+//商品表
+use nmstore;
+create table goods(
+	goods_id BIGINT not null AUTO_INCREMENT,
+	goods_name varchar(20) NOT NULL,
+	price float not null,
+	stock float not null,
+	introduce blog not null,
+	picture varchar(1024),
+	source varchar(100) not null,
+	manager varchar(50) not null,
+	manager_id INTEGER NOT null,
+	goods_date date not null,
+	sales_num float not null,
+	cost float not null,
+	primary key (goods_id)
+	
+);
+
 //商店-商品 中间表
 create table store_goods(
 	sg_id BIGINT NOT Null  AUTO_INCREMENT,
@@ -90,14 +71,14 @@ create table orders(
 	order_id BIGINT not null  AUTO_INCREMENT,
     goods varchar(50) not null,
     amount float not null,
-    date date not null,
+    orders_date date not null,
     manager varchar(50),
-    user varchar(50) not null,
+    username varchar(50) not null,
     handle_date date,
     cancle_date date,
     complete_date date,
     delivery_id int,
-    state int not null,
+    orders_state int not null,
     primary key(order_id)
 )
 
@@ -128,4 +109,24 @@ create table store_users_orders_deli(
     foreign key(user_id) references users(user_id),
     foreign key(manager_id) references users(user_id),
     foreign key(delivery_id) references delivery(delivery_id)
+)
+
+//cars(购物车)
+create table cars(
+	car_id integer not null,
+	user_id integer not null,
+	username  varchar(20) not null
+	primary key(car_id),
+	foreign key(user_id) references users(user_id)
+)
+
+//users_cars_goods
+create table users_cars_goods(
+	usg_id bigint not null AUTO_INCREMENT,
+	car_id integer not null,
+	goods_id bigint not null,
+	usg_date date not null,
+	primary key (usg_id),
+	foreign key(car_id) references cars(car_id),
+	foreign key(goods_id)references goods(goods_id)
 )
