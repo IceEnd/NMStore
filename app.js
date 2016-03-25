@@ -6,13 +6,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var connect = require('connect');
+var mysql = require('mysql');
 var fs = require('fs');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
-
 var accessLogStream = fs.createWriteStream(__dirname + '/logs/access.log', {flags: 'a'})
 
 // view engine setup
