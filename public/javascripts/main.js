@@ -14,9 +14,17 @@ $('.store-a').click(function() {
     $('.login-action').stop(true, false).animate({ "left": -width }, 500);
 });
 
+//警告框自动消失
+function alertHide() {
+    setTimeout(function() {
+        $('.alert').addClass('hide');
+    }, 2000);
+}
+
 $('.sigin-in-form').submit(function() {
     if ($('.sigin-in-username').val() == '' || $('.sigin-in-pwd').val() == '') {
         $('.login_main').append('<div class="alert alert-warning alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>请输入用户名和密码</div>');
+        alertHide();
         return false;
     }
     else {
@@ -29,29 +37,38 @@ $('.sigin-in-form').submit(function() {
             url: '/users/mlogin',
             dataType: 'json',
             traditional: true,
-            data:{
-                username:username,
-                pwd:pwd,
-                user_type:user_type
+            data: {
+                username: username,
+                pwd: pwd,
+                user_type: user_type,
             },
-            success:function(data){
+            success: function(data) {
                 console.log(data);
-                if(data.type == 0){
+                // alert(data);
+                if (data.type == 0) {
                     //登录成功
                     alert('登录成功');
                 }
-                else if(data.type == 1){
+                else if (data.type == 1) {
                     //用户名或密码错误
-                   alert('错误');
+                    //    alert('用户名或密码错误');
+                    $('.login_main').append('<div class="alert alert-warning alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>用户名或密码错误</div>');
+                    alertHide();
                 }
-                else{
-                    alert('网络错误')
+                else {
+                    // alert('网络链接错误');
+                    $('.login_main').append('<div class="alert alert-warning alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>网络连接错误</div>');
+                    alertHide();
                 }
             },
-            error:function(xhr, errorType, error){
+            error: function(xhr, errorType, error) {
+                // console.log(err);
+                // alert('网络连接错误！');
                 $('.login_main').append('<div class="alert alert-warning alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>网络连接错误</div>');
+                alertHide();
             }
         });
+        return false;
     }
 });
 
@@ -63,10 +80,12 @@ $('.sigin-up-form').submit(function() {
         $('.sigin-up-address').val() == '' ||
         $('.sigin-up-phone').val() == '') {
         $('.login_main').append('<div class="alert alert-warning alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>信息不能为空</div>');
+        alertHide();
         return false;
     }
     else if ($('.sigin-up-pwd').val() != $('.sigin-up-repwd').val()) {
         $('.login_main').append('<div class="alert alert-warning alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>两次密码不一样</div>');
+        alertHide();
         return false;
     }
     else {
@@ -92,7 +111,7 @@ $('.sigin-up-form').submit(function() {
             },
             success: function(data) {
                 if (data.type == 0) {
-                    //跳转页面
+                    //注册成功
                     $('.login_main').append('<div class="alert alert-success alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Well done!</strong>注册成功</div>');
                     $(':input', '.sigin-up-form')
                         .not(':button, :submit, :reset, :hidden')
@@ -104,15 +123,18 @@ $('.sigin-up-form').submit(function() {
                     //用户名重复
                     // alert('用户名重复');
                     $('.login_main').append('<div class="alert alert-success alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>用户名重复</div>');
+                    alertHide();
                 }
                 else {
                     //alert('注册失败');
                     $('.login_main').append('<div class="alert alert-success alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>网络错误</div>');
+                    alertHide();
                 }
             },
             error: function(xhr, errorType, error) {
                 //网络错误
-                alert('注册失败');
+                $('.login_main').append('<div class="alert alert-success alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>网络连接错误</div>');
+                alertHide();
             }
         });
         return false;
@@ -125,15 +147,20 @@ $('.store-form').submit(function() {
         $('.store-pwd').val() == '' ||
         $('.store-repwd').val() == '' ||
         $('.store-address').val() == '' ||
+        $('.store-idcard').val() == '' ||
         $('.store-phone').val() == '') {
         $('.login_main').append('<div class="alert alert-warning alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>信息不能为空</div>');
+        alertHide();
         return false;
     }
     else if ($('.store-pwd').val() != $('.store-repwd').val()) {
         $('.login_main').append('<div class="alert alert-warning alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>两次密码不一样</div>');
+        alertHide();
         return false;
     }
     else {
         //ajax发送数据
+        
+        return false;
     }
 });

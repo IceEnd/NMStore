@@ -10,6 +10,10 @@ router.get('/login', function(req, res, next) {
 /* 会员注册 */
 router.post('/mreg',function (req,res,next) {
     userDao.add(req, res, next);
-})
+});
 
+/* 会员登陆 */
+router.post('/mlogin',function (req,res,next) {
+    userDao.memberLogin(req,res,next);
+});
 module.exports = router;
