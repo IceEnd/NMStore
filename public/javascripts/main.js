@@ -21,7 +21,37 @@ $('.sigin-in-form').submit(function() {
     }
     else {
         //ajax发送数据
-
+        var username = $('.sigin-in-username').val();
+        var pwd = $.md5($('.sigin-in-pwd').val());
+        var user_type = $('.login_type').val();
+        $.ajax({
+            type: 'POST',
+            url: '/users/mlogin',
+            dataType: 'json',
+            traditional: true,
+            data:{
+                username:username,
+                pwd:pwd,
+                user_type:user_type
+            },
+            success:function(data){
+                console.log(data);
+                if(data.type == 0){
+                    //登录成功
+                    alert('登录成功');
+                }
+                else if(data.type == 1){
+                    //用户名或密码错误
+                   alert('错误');
+                }
+                else{
+                    alert('网络错误')
+                }
+            },
+            error:function(xhr, errorType, error){
+                $('.login_main').append('<div class="alert alert-warning alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>网络连接错误</div>');
+            }
+        });
     }
 });
 
@@ -72,10 +102,12 @@ $('.sigin-up-form').submit(function() {
                 }
                 else if (data.type == 1) {
                     //用户名重复
-                    alert('用户名重复');
+                    // alert('用户名重复');
+                    $('.login_main').append('<div class="alert alert-success alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>用户名重复</div>');
                 }
                 else {
-                    alert('注册失败');
+                    //alert('注册失败');
+                    $('.login_main').append('<div class="alert alert-success alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>网络错误</div>');
                 }
             },
             error: function(xhr, errorType, error) {

@@ -7,11 +7,10 @@ var $conf = require('../database/mysqlDB.js');
 
 var pool = mysql.createPool($conf.mysql);
 
+/*会员注册 */
 function add(req,res,next) {
     pool.getConnection(function (err,connection) {
         connection.query('SELECT * FROM users WHERE username = "' + req.body.username + '"',function (err,result) {
-            // console.log(result);
-            // console.log(err);
            if(!err){
                if(result.length > 0){
                    //用户名未重复
@@ -34,6 +33,39 @@ function add(req,res,next) {
     });
 };
 
+/*会员登录 */
+function memberLogin(req,res,next) {
+    console.log(req.body.user_type);
+    pool.getConnection(function (err,connection) {
+        
+        connection.query('SELECT * FROM users WHERE username ="' + req.body.username +'" and pwd = "'+req.body.pwd+'" and user_type = "' + req.body.user_type +'"',function (err,result) {
+            console.log(err);
+            console.log(result);
+            if(err == null){
+                console.log(2333);
+                if(result.length == 0){
+                    //用户名或密码错误
+                    console.log('sss');
+                    res.send({type:1});
+                }
+                else if(result.length == 1){
+                    //登录成功+创建session
+                    res.send({type:0});
+                }
+                else{
+                    res.send({type:2});
+                }
+            }
+            else{
+                //网络连接错误
+                console.log('dddd');
+                res.send({type:2});
+            }
+        });
+        connection.release();
+    });
+}
 module.exports = {
     add:add,
+    memberLogin:memberLogin,
 };
