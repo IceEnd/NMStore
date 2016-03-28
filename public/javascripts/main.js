@@ -42,10 +42,10 @@ $('.sigin-up-form').submit(function() {
     else {
         //信息填写完全
         var username = $('.sigin-up-username').val();
-        alert(username);
+        // alert(username);
         //使用md5对密码进行加密
         var pwd = $.md5($('.sigin-up-pwd').val());
-        alert(pwd);
+        // alert(pwd);
         var address = $('.sigin-up-address').val();
         var phone = $('.sigin-up-phone').val();
         //ajax发送数据
@@ -63,13 +63,18 @@ $('.sigin-up-form').submit(function() {
             success: function(data) {
                 if (data.type == 0) {
                     //跳转页面
-                    alert('注册成功');
+                    $('.login_main').append('<div class="alert alert-success alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Well done!</strong>注册成功</div>');
+                    $(':input', '.sigin-up-form')
+                        .not(':button, :submit, :reset, :hidden')
+                        .val('')
+                        .removeAttr('checked')
+                        .removeAttr('selected');
                 }
                 else if (data.type == 1) {
                     //用户名重复
                     alert('用户名重复');
                 }
-                else{
+                else {
                     alert('注册失败');
                 }
             },
