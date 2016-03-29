@@ -16,4 +16,8 @@ router.post('/mreg',function (req,res,next) {
 router.post('/mlogin',function (req,res,next) {
     userDao.memberLogin(req,res,next);
 });
+
+router.post('/sreg',function (req,res,next) {
+    userDao.storeLogin(req,res,next);
+})
 module.exports = router;

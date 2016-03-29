@@ -160,7 +160,49 @@ $('.store-form').submit(function() {
     }
     else {
         //ajax发送数据
-        
+        var name = $('.store-name').val();
+        var username = $('.store-username').val();
+        var pwd = $.md5($('.store-pwd').val());
+        var address = $('.store-address').val();
+        var idcard = $('.store-idcard').val();
+        var phone = $('.store-tel').val();
+        console.log(idcard);
+        $.ajax({
+            type: 'POST',
+            url: '/users/sreg',
+            dataType: 'json',
+            traditional: true,
+            data:{
+                name:name,
+                username:username,
+                pwd:pwd,
+                address:address,
+                idcard:idcard,
+                phone:phone
+            },
+            success:function(data){
+                if(data.type == 0){
+                    $('.login_main').append('<div class="alert alert-success alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Well done!</strong>注册成功</div>');
+                    $(':input', '.sigin-up-form')
+                        .not(':button, :submit, :reset, :hidden')
+                        .val('')
+                        .removeAttr('checked')
+                        .removeAttr('selected');
+                }
+                else if(data.type == 1){
+                     $('.login_main').append('<div class="alert alert-success alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>用户名重复</div>');
+                     alertHide();
+                }
+                else{
+                    $('.login_main').append('<div class="alert alert-success alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>网络连接错误</div>');
+                    alertHide();
+                }
+            },
+            error: function(xhr, errorType, error){
+                $('.login_main').append('<div class="alert alert-success alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>网络连接错误</div>');
+                alertHide();
+            }
+        });
         return false;
     }
 });
