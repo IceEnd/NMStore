@@ -15,6 +15,7 @@
     "serve-favicon": "~2.3.0",
     "express-session":"1.12.1",
     "connect": "2.30.2",
-    "mysql":"latest"
+    "mysql":"latest",
+    "crypto":"0.0.3"
   }
 }

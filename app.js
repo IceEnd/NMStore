@@ -8,6 +8,7 @@ var session = require('express-session');
 var connect = require('connect');
 var mysql = require('mysql');
 var fs = require('fs');
+var crypto = require('crypto');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');

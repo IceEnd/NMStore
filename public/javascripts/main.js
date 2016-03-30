@@ -30,7 +30,7 @@ $('.sigin-in-form').submit(function() {
     else {
         //ajax发送数据
         var username = $('.sigin-in-username').val();
-        var pwd = $.md5($('.sigin-in-pwd').val());
+        var pwd = $('.sigin-in-pwd').val();
         var user_type = $('.login_type').val();
         $.ajax({
             type: 'POST',
@@ -93,7 +93,7 @@ $('.sigin-up-form').submit(function() {
         var username = $('.sigin-up-username').val();
         // alert(username);
         //使用md5对密码进行加密
-        var pwd = $.md5($('.sigin-up-pwd').val());
+        var pwd = $('.sigin-up-pwd').val();
         // alert(pwd);
         var address = $('.sigin-up-address').val();
         var phone = $('.sigin-up-phone').val();
@@ -162,7 +162,7 @@ $('.store-form').submit(function() {
         //ajax发送数据
         var name = $('.store-name').val();
         var username = $('.store-username').val();
-        var pwd = $.md5($('.store-pwd').val());
+        var pwd = $('.store-pwd').val();
         var address = $('.store-address').val();
         var idcard = $('.store-idcard').val();
         var phone = $('.store-tel').val();

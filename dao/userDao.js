@@ -3,9 +3,16 @@
  */
 var mysql = require('mysql');
 var $conf = require('../database/mysqlDB.js');
-
-
+var crypto = require('crypto');
 var pool = mysql.createPool($conf.mysql);
+
+//密码加密
+function hashPwd(str) {
+    var hasher=crypto.createHash("md5");
+    hasher.update(str);
+    var hashmsg=hasher.digest('hex');
+    return hashmsg;   
+}
 
 /*会员注册 */
 function add(req, res, next) {
@@ -18,7 +25,7 @@ function add(req, res, next) {
                 }
                 else {
                     //注册
-                    connection.query('INSERT INTO users(user_id,username,phone,pwd,address,user_type) VALUES(0,?,?,?,?,?)', [req.body.username, req.body.phone, req.body.pwd, req.body.address, 3], function(err, result) {
+                    connection.query('INSERT INTO users(user_id,username,phone,pwd,address,user_type) VALUES(0,?,?,?,?,?)', [req.body.username, req.body.phone, hashPwd(req.body.pwd), req.body.address, 3], function(err, result) {
                         if (result) {
                             console.log(result);
                             res.send({ type: 0 });
@@ -35,12 +42,12 @@ function add(req, res, next) {
 function memberLogin(req, res, next) {
     pool.getConnection(function(err, connection) {
 
-        connection.query('SELECT * FROM users WHERE username ="' + req.body.username + '" and pwd = "' + req.body.pwd + '" and user_type = "' + req.body.user_type + '"', function(err, result) {
+        connection.query('SELECT * FROM users WHERE username ="' + req.body.username + '" and pwd = "' + hashPwd(req.body.pwd) + '" and user_type = "' + req.body.user_type + '"', function(err, result) {
             if (!err) {
                 console.log(result.length);
                 if (result.length == 0) {
                     //用户名或密码错误
-                    console.log('sss');
+                    console.log('用户名或密码错误');
                     res.send({ type: 1 });
                 }
                 else if (result.length == 1) {
@@ -77,7 +84,7 @@ function storeLogin(req, res, next) {
                 else {
                     //用户名为重复,users、store、store_users表插入
                     connection.query('INSERT INTO users(user_id,username,phone,pwd,address,user_type) VALUES(0,?,?,?,?,?)',
-                        [req.body.username, req.body.phone, req.body.pwd, req.body.address, 1], function(err, result) {
+                        [req.body.username, req.body.phone, hashPwd(req.body.pwd), req.body.address, 1], function(err, result) {
                             if (!err) {
                                 user_id = result.insertId;
                                 connection.query('Insert INTO store(store_id,name,username,idcard,phone,address,store_date,store_state) values(0,?,?,?,?,?,?,?)',
