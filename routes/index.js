@@ -4,7 +4,13 @@ var userDao = require('../dao/userDao.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'NMStore' });
+  var user = '';
+  var user_type= '';
+  if(req.session.user){
+      user = req.session.user;
+      user_type = req.session.user_type;
+  }
+  res.render('index', { title: 'NMStore',user: user,user_type:user_type});
 });
 
 router.get('/addUser', function(req, res, next) {
