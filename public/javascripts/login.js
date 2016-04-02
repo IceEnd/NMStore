@@ -166,7 +166,6 @@ $('.store-form').submit(function() {
         var address = $('.store-address').val();
         var idcard = $('.store-idcard').val();
         var phone = $('.store-tel').val();
-        console.log(idcard);
         $.ajax({
             type: 'POST',
             url: '/users/sreg',
