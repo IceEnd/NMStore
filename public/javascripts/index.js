@@ -1,7 +1,7 @@
 //清楚cookie
 function clearCookie(array){
     for(i in array){
-        $.cookie(array[i],null, { expires: -1 });
+        $.removeCookie(array[i]);
     }
 }
 

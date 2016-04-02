@@ -45,9 +45,9 @@ $('.sigin-in-form').submit(function() {
             success: function(data) {
                 if (data.type == 0) {
                     //登录成功,设置cookie
-                    $.cookie('user_id',data.user_id, { path: "/"},{ expires: 7 });
-                    $.cookie('username',username,{ path: "/"},{ expires: 7 });
-                    $.cookie('user_type',user_type,{ path: "/"},{ expires: 7 });
+                    $.cookie('user_id',data.user_id, { expires: 7 ,path: "/"});
+                    $.cookie('username',username,{ expires: 7 ,path: "/"});
+                    $.cookie('user_type',user_type,{ expires: 7 ,path: "/"});
                     // alert('登陆成功');
                     window.location = '/';
                 }
