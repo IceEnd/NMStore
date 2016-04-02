@@ -27,7 +27,6 @@ function add(req, res, next) {
                     //注册
                     connection.query('INSERT INTO users(user_id,username,phone,pwd,address,user_type) VALUES(0,?,?,?,?,?)', [req.body.username, req.body.phone, hashPwd(req.body.pwd), req.body.address, 3], function(err, result) {
                         if (result) {
-                            console.log(result);
                             res.send({ type: 0 });
                         }
                     });
@@ -47,22 +46,18 @@ function memberLogin(req, res, next) {
                 console.log(result.length);
                 if (result.length == 0) {
                     //用户名或密码错误
-                    console.log('用户名或密码错误');
-                    res.send({ type: 1 });
+                    res.send({ type: 1});
                 }
                 else if (result.length == 1) {
-                    //登录成功+创建session
-                    console.log('登陆成功');
-                    res.send({ type: 0 });
+                    //登录成功
+                    res.send({ type: 0,user_id:result[0].user_id});
                 }
                 else {
-                    console.log('其他错误');
-                    res.send({ type: 2 });
+                    res.send({ type: 2});
                 }
             }
             else {
                 //网络连接错误
-                console.log('dddd');
                 res.send({ type: 2 });
             }
         });
@@ -102,7 +97,6 @@ function storeLogin(req, res, next) {
                                                 });
                                         }
                                         else {
-                                            console.log(err);
                                             res.send({ type: 2 });
                                         }
                                     });

@@ -43,11 +43,13 @@ $('.sigin-in-form').submit(function() {
                 user_type: user_type,
             },
             success: function(data) {
-                console.log(data);
-                // alert(data);
                 if (data.type == 0) {
-                    //登录成功
-                    alert('登录成功');
+                    //登录成功,设置cookie
+                    $.cookie('user_id',data.user_id, { path: "/"},{ expires: 7 });
+                    $.cookie('username',username,{ path: "/"},{ expires: 7 });
+                    $.cookie('user_type',user_type,{ path: "/"},{ expires: 7 });
+                    // alert('登陆成功');
+                    window.location = '/';
                 }
                 else if (data.type == 1) {
                     //用户名或密码错误
@@ -92,7 +94,6 @@ $('.sigin-up-form').submit(function() {
         //信息填写完全
         var username = $('.sigin-up-username').val();
         // alert(username);
-        //使用md5对密码进行加密
         var pwd = $('.sigin-up-pwd').val();
         // alert(pwd);
         var address = $('.sigin-up-address').val();
@@ -121,7 +122,6 @@ $('.sigin-up-form').submit(function() {
                 }
                 else if (data.type == 1) {
                     //用户名重复
-                    // alert('用户名重复');
                     $('.login_main').append('<div class="alert alert-success alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Warning!</strong>用户名重复</div>');
                     alertHide();
                 }

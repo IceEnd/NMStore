@@ -14,7 +14,8 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
 
-    <script src="/javascripts/jquery-2.2.2.min.js"></script>
+    <script src="/javascripts/libs/jquery-2.2.2.min.js"></script>
+    <script src="/javascripts/libs/jquery.cookie.js"></script>
 </head>
 
 <body>
@@ -49,7 +50,7 @@
                                 <% if(user_type == 1 || user_type == 2){%>
                                 <li><a href="#">进入店铺</li>
                                 <% } %>
-                                <li><a href="#">登出</a></li>
+                                <li><a id="logout" href="javascript:">登出</a></li>
                             </ul>
                         </li>
                     <%}else{%>
@@ -73,7 +74,8 @@
         <%= title %>
     </p>
 
-    <script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/javascripts/libs/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/javascripts/index.js"></script>
 </body>
 
 </html>
