@@ -183,7 +183,7 @@ $('.store-form').submit(function() {
             success:function(data){
                 if(data.type == 0){
                     $('.login_main').append('<div class="alert alert-success alert-dismissible login-alert" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Well done!</strong>注册成功</div>');
-                    $(':input', '.sigin-up-form')
+                    $(':input', '.store-form')
                         .not(':button, :submit, :reset, :hidden')
                         .val('')
                         .removeAttr('checked')
