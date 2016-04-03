@@ -41,6 +41,7 @@ create table store_users(
 use nmstore;
 create table goods(
 	goods_id BIGINT not null AUTO_INCREMENT,
+	store_id INTEGER NOT NULL,
 	goods_name varchar(20) NOT NULL,
 	price float not null,
 	stock float not null,
@@ -52,18 +53,10 @@ create table goods(
 	goods_date date not null,
 	sales_num float not null,
 	cost float not null,
-	primary key (goods_id)
-	
+	goods_state integer not null,
+	primary key (goods_id),
+	foreign key(store_id) references store(store_id)
 );
-
-//商店-商品 中间表
-create table store_goods(
-	sg_id BIGINT NOT Null  AUTO_INCREMENT,
-    store_id int not null,
-    goods_id int not null,
-    foreign key(store_id) references store(store_id),
-    primary key(sg_id)
-)
 
 //订单表
 use nmstore;
