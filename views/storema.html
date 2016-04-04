@@ -57,7 +57,103 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
+
+    <div class="container storema-container">
+        <div class="row table-bar">
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Search</button>
+            </form>
+            <button type="button" class="btn btn-primary navbar-right table-bar-btn" data-toggle="modal" data-target="#addGoodsModal">添加商品</button>
+        </div>
+        <div class="row">
+            <table class="table table-striped">
+                <%= goods %>
+                    <%= amount %>
+            </table>
+        </div>
+        <nav class="row">
+            <ul class="pagination pagination-lg">
+                <% if(amount >= 0){ 
+                    var num = 1;
+                %>
+                    <li><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                    </li>
+                    <% while(amount >= 0){ %>
+                        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                        <% amount = amount - 20; } %>
+                            <li><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+                            <% } %>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- 模态框 -->
+    <div class="modal bs-example-modal-lg fade" id="addGoodsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    data-type="add">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">添加商品</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="goods-name" class="col-sm-2 control-label">名称</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="goods-name" placeholder="商品名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="goods-source" class="col-sm-2 control-label">厂家</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="goods-source" placeholder="生产厂家">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="goods-price" class="col-sm-2 control-label">售价</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" id="goods-price" placeholder="0" min="0" max="99999">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="goods-cost" id="little-lable" class="col-sm-2 control-label">成本</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" id="goods-cost" placeholder="0" min="0" max="99999">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="goods-stock"  class="col-sm-2 control-label">库存</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" id="goods-stock" placeholder="0" min="0" max="99999">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="goods-introduce"  class="col-sm-2 control-label">商品简介</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" id="goods-introduce" rows="4"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="upload-images">选择图片</label>
+                            <div class="col-md-2">
+                                <input type="file" id="upload-images" multiple>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">添加商品</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript" src="/javascripts/libs/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/javascripts/storema.js"></script>
 </body>
 
 </html>

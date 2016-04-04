@@ -118,6 +118,18 @@ a,a:visited,a:hover{
     margin-left: 5%;
 }
 
+.storema-container{
+    padding-top: 100px;
+}
+
+.table-bar{
+    border-bottom: 1px solid #337AB7;
+}
+
+.table-bar .table-bar-btn{
+    margin-right: 0;
+}
+
 @media (max-width: 768px){
     .login_main{
         width: 100%;

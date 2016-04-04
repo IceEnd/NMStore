@@ -39,7 +39,6 @@ function getStore(store_id) {
     return defer.promise;
 }
 
-
 module.exports = {
     getStoreId: getStoreId,
     getStore: getStore,
