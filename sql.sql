@@ -46,7 +46,6 @@ create table goods(
 	price float not null,
 	stock float not null,
 	introduce blog not null,
-	picture varchar(1024),
 	source varchar(100) not null,
 	manager varchar(50) not null,
 	manager_id INTEGER NOT null,
@@ -56,6 +55,14 @@ create table goods(
 	goods_state integer not null,
 	primary key (goods_id),
 	foreign key(store_id) references store(store_id)
+);
+
+create table goods_images(
+	images_id BIGINT not null AUTO_INCREMENT,
+	goods_id BIGINT not null,
+	src varchar(200),
+	primary key (images_id),
+	foreign key(goods_id) references goods(goods_id)
 );
 
 //¶©µ¥±í
