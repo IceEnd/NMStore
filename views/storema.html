@@ -100,7 +100,7 @@
                     <h4 class="modal-title" id="myModalLabel">添加商品</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal">
+                    <form class="form-horizontal" id="goods-form">
                         <div class="form-group">
                             <label for="goods-name" class="col-sm-2 control-label">名称</label>
                             <div class="col-sm-8">
@@ -140,14 +140,19 @@
                         <div class="form-group">
                             <label class="col-md-2 control-label" for="upload-images">选择图片</label>
                             <div class="col-md-2">
-                                <input type="file" id="upload-images" multiple>
+                                <input type="file" id="upload-images" multiple onchange="javascript:setImagePreview();">
+                            </div>
+                        </div>
+                        <div class="from-group preview-from-group">
+                            <div id="preview-div" class="col-md-10">
+                                
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">添加商品</button>
+                    <button type="button" class="btn btn-primary" id="add-goods-btn">添加商品</button>
                 </div>
             </div>
         </div>

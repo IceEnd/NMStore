@@ -4,6 +4,9 @@ var storeDao = require('../dao/storeDao.js');
 var goodsDao = require('../dao/goodsDao.js');
 var Q = require('q');
 
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart();
+
 router.get('/', function(req, res, next) {
     if (req.cookies.user_type == '1' || req.cookies.user_type == '2') {
         var store_id,store,goods,amount;
@@ -30,6 +33,12 @@ router.get('/', function(req, res, next) {
     else {
         res.redirect('../');
     }
+});
+
+router.post('/addgoods',multipartMiddleware,function (req,res,next) {
+   console.log(req.body);
+   console.log(req.files);
+   res.send({type:1});
 });
 
 module.exports = router;

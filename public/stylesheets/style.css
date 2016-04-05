@@ -130,6 +130,24 @@ a,a:visited,a:hover{
     margin-right: 0;
 }
 
+#preview-div{
+    margin: 0 auto;
+    height: 50px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#preview-div img{
+    height: 48px;
+    width: auto;
+    border: 1px rosybrown solid;
+    margin-left: 5px;
+}
+
+.preview-from-group{
+    overflow: hidden;
+}
+
 @media (max-width: 768px){
     .login_main{
         width: 100%;

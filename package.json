@@ -18,6 +18,7 @@
     "mysql":"latest",
     "crypto":"0.0.3",
     "co":"latest",
-    "q":"latest"
+    "q":"latest",
+    "connect-multiparty":"latest"
   }
 }
