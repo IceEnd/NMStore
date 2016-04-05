@@ -45,7 +45,7 @@ create table goods(
 	goods_name varchar(20) NOT NULL,
 	price float not null,
 	stock float not null,
-	introduce blog not null,
+	introduce text not null,
 	source varchar(100) not null,
 	manager varchar(50) not null,
 	manager_id INTEGER NOT null,
