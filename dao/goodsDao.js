@@ -3,11 +3,11 @@ var $conf = require('../database/mysqlDB.js');
 var pool = mysql.createPool($conf.mysql);
 var Q = require('q');
 
-function getGoodsByStoreId(store_id,start,amount) {
+function getGoodsByStoreId(store_id, start, amount) {
     var defer = Q.defer();
     pool.getConnection(function(err, connection) {
-        connection.query('SELECT * from goods where store_id = ' + store_id +' order by goods_id limit '+start+','+amount, function(err, result) {
-            if (!err) {            
+        connection.query('SELECT * from goods where store_id = ' + store_id + ' order by goods_id limit ' + start + ',' + amount, function(err, result) {
+            if (!err) {
                 defer.resolve(result);
             }
             else {
@@ -22,14 +22,14 @@ function getGoodsByStoreId(store_id,start,amount) {
 
 function getGoodsAmountByStoreId(store_id) {
     var defer = Q.defer();
-    pool.getConnection(function (err,connection) {
-        connection.query('SELECT count(*) from goods where store_id = '+store_id,function (err,result) {
-            if(!err){
+    pool.getConnection(function(err, connection) {
+        connection.query('SELECT count(*) from goods where store_id = ' + store_id, function(err, result) {
+            if (!err) {
                 defer.resolve(result[0]['count(*)']);
             }
-            else{
+            else {
                 console.log(err);
-                //defer.reject(err);
+                // defer.reject(err);
             }
             connection.release();
         });
@@ -37,7 +37,62 @@ function getGoodsAmountByStoreId(store_id) {
     return defer.promise;
 }
 
+
+/**
+ * 添加商品
+ */
+function addGoods(goods, date, manager,store_id) {
+    var defer = Q.defer();
+    pool.getConnection(function(err, connection) {
+        connection.query('INSERT INTO goods(goods_id,store_id,goods_name,price,stock,introduce,source,manager,goods_date,cost,goods_state) VALUE(0,?,?,?,?,?,?,?,?,?,?)',
+            [goods.goodsName,store_id, goods.goodsPrice, goods.goodsStock, goods.goodsIntroduce, goods.goodsSource, manager, date, goods.goodsCost, 0], function(err, result) {
+                if (!err) {
+                    defer.resolve(result.insertId);
+                }
+                else {
+                    console.log('111'+err);
+                    defer.reject(err);
+                }
+            });
+    });
+    return defer.promise;
+}
+
+/**
+ * 添加商品图片
+ */
+function addGoodsImg(images, good_id) {
+    var defer = Q.defer();
+    if (images.length == 0) {
+        refer.resolve(true);
+    }
+    else {
+        var str = 'INSERT INTO goods_images(goods_id,src) VALUE ';
+        for(var i = 0; i < images.length; i++){
+            str += '('+good_id+',"'+images[i]+'")';
+            if(i <= images.length -2){
+                str += ',';
+            }
+        }
+        console.log(str);
+        pool.getConnection(function(err, connection) {
+            connection.query(str,function (err,result) {
+                if(!err){
+                    defer.resolve(true);
+                }
+                else{
+                    console.log(err);
+                    defer.reject(err);
+                }
+            })
+        });
+    }
+    return defer.promise;
+}
+
 module.exports = {
-    getGoodsByStoreId:getGoodsByStoreId,
-    getGoodsAmountByStoreId:getGoodsAmountByStoreId,
+    getGoodsByStoreId: getGoodsByStoreId,
+    getGoodsAmountByStoreId: getGoodsAmountByStoreId,
+    addGoods: addGoods,
+    addGoodsImg: addGoodsImg,
 }

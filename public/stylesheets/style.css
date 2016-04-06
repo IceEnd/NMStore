@@ -148,6 +148,36 @@ a,a:visited,a:hover{
     overflow: hidden;
 }
 
+#progress{
+    position: absolute;
+    top: 50%;
+    width: 80%;
+    left: 10%;
+    display: none;
+}
+
+#progress-bg{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background: #000000;
+    opacity: 0.5;
+    display: none;
+}
+
+#progress-tip{
+    position: absolute;
+    bottom: 35%;
+    height: 20px;
+    font-size: 18px;
+    font-weight: lighter;
+    color: #f7f7f7;
+    text-align: center;
+    width: 100%;
+    display: none;
+}
+
 @media (max-width: 768px){
     .login_main{
         width: 100%;

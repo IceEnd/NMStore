@@ -1,4 +1,5 @@
 //mysql
+create database NMSTORE;
 use nmstore;
 CREATE table store(
 	store_id INT NOT NULL  AUTO_INCREMENT,
@@ -12,9 +13,9 @@ CREATE table store(
 	store_img varchar(100),
     store_date DATE NOT NULL,
     primary key (store_id)
-);
+)CHARSET=utf8;
 
-//ÓÃ»§±í
+//ï¿½Ã»ï¿½ï¿½ï¿½
 create table users(
 	user_id int not null  AUTO_INCREMENT,
     username varchar(20) not null,
@@ -24,20 +25,18 @@ create table users(
     address varchar(50) not null,
     user_type int not null,
     primary key (user_id)
-)
+)default CHARSET=utf8;
 
-//ÉÌµê-¹ÜÀíÔ± ÖÐ¼ä±í
+//ï¿½Ìµï¿½-ï¿½ï¿½ï¿½ï¿½Ô± ï¿½Ð¼ï¿½ï¿½ï¿½
 use nmstore;
 create table store_users(
 	su_id int not null  AUTO_INCREMENT,
     store_id int not null,
     user_id int not null,
-    foreign key(store_id) references store(store_id),
-    foreign key(user_id) references users(user_id),
     primary key(su_id)
-)
+) engine=InnoDB default CHARSET=utf8;
 
-//ÉÌÆ·±í
+//ï¿½ï¿½Æ·ï¿½ï¿½
 use nmstore;
 create table goods(
 	goods_id BIGINT not null AUTO_INCREMENT,
@@ -48,14 +47,13 @@ create table goods(
 	introduce text not null,
 	source varchar(100) not null,
 	manager varchar(50) not null,
-	manager_id INTEGER NOT null,
 	goods_date date not null,
-	sales_num float not null,
+	sales_num float,
 	cost float not null,
 	goods_state integer not null,
 	primary key (goods_id),
-	foreign key(store_id) references store(store_id)
-);
+	foreign key(store_id) references store(store_id) on   delete   cascade   on   update   cascade
+) default CHARSET=utf8;
 
 create table goods_images(
 	images_id BIGINT not null AUTO_INCREMENT,
@@ -63,9 +61,9 @@ create table goods_images(
 	src varchar(200),
 	primary key (images_id),
 	foreign key(goods_id) references goods(goods_id)
-);
+) default CHARSET=utf8;
 
-//¶©µ¥±í
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 use nmstore;
 create table orders(
 	order_id BIGINT not null  AUTO_INCREMENT,
@@ -80,9 +78,9 @@ create table orders(
     delivery_id int,
     orders_state int not null,
     primary key(order_id)
-)
+) engine=InnoDB;
 
-//¿ìµÝ±í
+//ï¿½ï¿½ï¿½Ý±ï¿½
 use nmstore;
 create table delivery(
 	delivery_id int not null  AUTO_INCREMENT,
@@ -93,9 +91,9 @@ create table delivery(
     wordker varchar(20),
     palce varchar(20),
     primary key(delivery_id)
-)
+) engine=InnoDB;
 
-//ÖÐ¼ä±í
+//ï¿½Ð¼ï¿½ï¿½ï¿½
 use nmstore;
 create table store_users_orders_deli(
 	suod_id int not null  AUTO_INCREMENT,
@@ -109,16 +107,16 @@ create table store_users_orders_deli(
     foreign key(user_id) references users(user_id),
     foreign key(manager_id) references users(user_id),
     foreign key(delivery_id) references delivery(delivery_id)
-)
+) engine=InnoDB;
 
-//cars(¹ºÎï³µ)
+//cars(ï¿½ï¿½ï¿½ï³µ)
 create table cars(
 	car_id integer not null,
 	user_id integer not null,
-	username  varchar(20) not null
+	username  varchar(20) not null,
 	primary key(car_id),
 	foreign key(user_id) references users(user_id)
-)
+) engine=InnoDB;
 
 //users_cars_goods
 create table users_cars_goods(
@@ -129,4 +127,4 @@ create table users_cars_goods(
 	primary key (usg_id),
 	foreign key(car_id) references cars(car_id),
 	foreign key(goods_id)references goods(goods_id)
-)
+) engine=InnoDB;
