@@ -28,7 +28,6 @@ router.get('/', function(req, res, next) {
                 goods = rgoods;
             })
             .finally(function() {
-                console.log(store);
                 res.render('storema', { title: 'NMStore', username: req.cookies.username, user_type: req.cookies.user_type, store: store, goods: goods, amount: amount });
             });
     }
@@ -63,7 +62,6 @@ router.post('/addgoods', function(req, res, next) {
         .then(function(goods_id) {
             goods_info.goods_id = goods_id;
             return goodsDao.addGoodsImg(img_url, goods_id);
-
         })
         .then(function(type) {
             if (type) {
@@ -72,7 +70,7 @@ router.post('/addgoods', function(req, res, next) {
         })
         .finally(function() {
             if (success_flag) {
-                res.send({ 'type': 0, 'goods': goods_info });
+                res.send({ 'type': 0, 'new_goods': goods_info });
                 res.end();
             }
             else {

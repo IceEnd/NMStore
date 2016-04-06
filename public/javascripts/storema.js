@@ -16,7 +16,7 @@ setCookie();
 
 $('#logout').click(function() {
     console.log('sss');
-    clearCookie(['user_id', 'username', 'user_type','store_id']);
+    clearCookie(['user_id', 'username', 'user_type', 'store_id']);
     window.location.reload();
 });
 
@@ -81,7 +81,21 @@ $('#add-goods-btn').click(function() {
         processData: false,
         success: function(data) {
             if (data.type == 0) {
-
+                $('#progress-tip').html('添加成功');
+                $(':input', '#goods-form')
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
+                $('#preview-div').children().remove();
+                 setTimeout(function() {
+                    $('#close-modal').click();
+                    $('#progress-tip').html('正在连接...');
+                    $('#progress-bg').css("display", "none");
+                    $('#progress').css("display", "none");
+                    $('#progress-tip').css("display", "none");
+                }, 2000);
+                    
             }
             else {
                 $('#progress-tip').html('网络连接错误,稍后再试');

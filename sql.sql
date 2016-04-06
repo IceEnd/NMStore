@@ -2,7 +2,7 @@
 create database NMSTORE;
 use nmstore;
 CREATE table store(
-	store_id INT NOT NULL  AUTO_INCREMENT,
+	store_id INTEGER NOT NULL  AUTO_INCREMENT,
     name VARCHAR(20) NOT NULL,
     user_id INT NOT NULL,
     username VARCHAR(20) NOT NULL,
@@ -13,7 +13,7 @@ CREATE table store(
 	store_img varchar(100),
     store_date DATE NOT NULL,
     primary key (store_id)
-)CHARSET=utf8;
+)engine=innodb default CHARSET=utf8;
 
 //�û���
 create table users(
@@ -25,7 +25,7 @@ create table users(
     address varchar(50) not null,
     user_type int not null,
     primary key (user_id)
-)default CHARSET=utf8;
+)engine=innodb default CHARSET=utf8;
 
 //�̵�-����Ա �м���
 use nmstore;
@@ -34,7 +34,7 @@ create table store_users(
     store_id int not null,
     user_id int not null,
     primary key(su_id)
-) engine=InnoDB default CHARSET=utf8;
+)engine=innodb default CHARSET=utf8;
 
 //��Ʒ��
 use nmstore;
@@ -45,7 +45,7 @@ create table goods(
 	price float not null,
 	stock float not null,
 	introduce text not null,
-	source varchar(100) not null,
+	goods_source varchar(100) not null,
 	manager varchar(50) not null,
 	goods_date date not null,
 	sales_num float,
@@ -53,15 +53,15 @@ create table goods(
 	goods_state integer not null,
 	primary key (goods_id),
 	foreign key(store_id) references store(store_id) on   delete   cascade   on   update   cascade
-) default CHARSET=utf8;
+) engine=innodb default CHARSET=utf8;
 
 create table goods_images(
 	images_id BIGINT not null AUTO_INCREMENT,
 	goods_id BIGINT not null,
 	src varchar(200),
 	primary key (images_id),
-	foreign key(goods_id) references goods(goods_id)
-) default CHARSET=utf8;
+	foreign key(goods_id) references goods(goods_id)on   delete   cascade   on   update   cascade
+) engine=innodb default CHARSET=utf8;
 
 //������
 use nmstore;
@@ -78,7 +78,7 @@ create table orders(
     delivery_id int,
     orders_state int not null,
     primary key(order_id)
-) engine=InnoDB;
+) engine=innodb default CHARSET=utf8;
 
 //���ݱ�
 use nmstore;
@@ -91,7 +91,7 @@ create table delivery(
     wordker varchar(20),
     palce varchar(20),
     primary key(delivery_id)
-) engine=InnoDB;
+) default CHARSET=utf8;
 
 //�м���
 use nmstore;
@@ -107,7 +107,7 @@ create table store_users_orders_deli(
     foreign key(user_id) references users(user_id),
     foreign key(manager_id) references users(user_id),
     foreign key(delivery_id) references delivery(delivery_id)
-) engine=InnoDB;
+) default CHARSET=utf8;
 
 //cars(���ﳵ)
 create table cars(
@@ -116,7 +116,7 @@ create table cars(
 	username  varchar(20) not null,
 	primary key(car_id),
 	foreign key(user_id) references users(user_id)
-) engine=InnoDB;
+) default CHARSET=utf8;
 
 //users_cars_goods
 create table users_cars_goods(
@@ -127,4 +127,4 @@ create table users_cars_goods(
 	primary key (usg_id),
 	foreign key(car_id) references cars(car_id),
 	foreign key(goods_id)references goods(goods_id)
-) engine=InnoDB;
+) default CHARSET=utf8;

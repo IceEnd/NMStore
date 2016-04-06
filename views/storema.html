@@ -38,7 +38,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="/">首页 <span class="sr-only">(current)</span></a></li>
                     <li><a href="#">购物车</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -70,8 +70,17 @@
         </div>
         <div class="row">
             <table class="table table-striped">
-                <%= goods %>
-                    <%= amount %>
+                <thead class="row">
+                    <th class="col-sm-1">#</th>
+                    <th class="col-sm-2">名称</th>
+                    <th class="col-sm-2">信息</th>
+                    <th class="col-sm-3">简介</th>
+                    <th class="col-sm-2">销量</th>
+                    <th class="col-sm-2">操作</th>
+                </thead>
+                <tbody>
+                    
+                </tbody>
             </table>
         </div>
         <nav class="row">
