@@ -8,28 +8,33 @@ var formidable = require("formidable");
 /**
  * 上传文件
  */
-function uploadImg(req, res, next, date,str) {
+function uploadImg(req, res, next, date, str) {
     var img_url = [];
     var defer = Q.defer();
     var form = new formidable.IncomingForm();
     form.uploadDir = "./tmp/";
     form.keepExtensions = true;
     form.parse(req, function(err, fields, files) {
-        for (var i = 0; i < fields.imgLength; i++) {
-            var file = files['image'+i];
-            var fName = date.getTime() + '' + req.cookies.user_id + 'img' + i;
-            switch (file.type) {
-                case "image/jpeg": fName += '.jpg';
-                    break;
-                case "image/png": fName += '.png';
-                    break;
-                default: fName += '.gif';
-                    break;
-            }
-            fs.renameSync(file.path,str+'/'+fName);
-            img_url.push('/upload/'+date.getFullYear() +'/'+ date.getMonth() +'/'+fName);
-            if(i == (fields.imgLength - 1)){
-                defer.resolve({"goods":fields,"img_url":img_url});
+        if (fields.imgLength == 0) {
+            defer.resolve({ "goods": fields, "img_url": img_url });
+        }
+        else {
+            for (var i = 0; i < fields.imgLength; i++) {
+                var file = files['image' + i];
+                var fName = date.getTime() + '' + req.cookies.user_id + 'img' + i;
+                switch (file.type) {
+                    case "image/jpeg": fName += '.jpg';
+                        break;
+                    case "image/png": fName += '.png';
+                        break;
+                    default: fName += '.gif';
+                        break;
+                }
+                fs.renameSync(file.path, str + '/' + fName);
+                img_url.push('/upload/' + date.getFullYear() + '/' + date.getMonth() + '/' + fName);
+                if (i == (fields.imgLength - 1)) {
+                    defer.resolve({ "goods": fields, "img_url": img_url });
+                }
             }
         }
     });

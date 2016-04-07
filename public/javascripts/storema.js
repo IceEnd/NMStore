@@ -88,14 +88,19 @@ $('#add-goods-btn').click(function() {
                     .removeAttr('checked')
                     .removeAttr('selected');
                 $('#preview-div').children().remove();
-                 setTimeout(function() {
+                setTimeout(function() {
                     $('#close-modal').click();
                     $('#progress-tip').html('正在连接...');
                     $('#progress-bg').css("display", "none");
                     $('#progress').css("display", "none");
                     $('#progress-tip').css("display", "none");
-                }, 2000);
-                    
+                }, 1000);
+                console.log(data.new_goods);
+                $('#goods_tbody').append('<tr><td><a href="/goods?goodsId='+data.new_goods.goodsId+'" target="_blank"><p>'+data.new_goods.goodsId+'</p></a></td><td><a href="/goods?goodsId='+
+                data.new_goods.goodsId+'" target="_blank">'+data.new_goods.goodsName+'</a>('+data.new_goods.goodsSource+')</td><td><p>售价: '+
+                data.new_goods.goodsPrice+'</p><p>成本: '+data.new_goods.goodsCost+'</p><p>库存: '+data.new_goods.goodsStock+
+                '</p></td><td><p class="row-04-p">'+data.new_goods.goodsIntroduce+'</p></td><td><p>销量:0</p><p>利润:0</td><td><a class="btn btn-default" href="#" role="button">修改</a><a class="btn btn-default" href="#" role="button">增加库存</a><a class="btn btn-default" href="#" role="button">下架</a></td></tr>');
+               
             }
             else {
                 $('#progress-tip').html('网络连接错误,稍后再试');
@@ -105,7 +110,7 @@ $('#add-goods-btn').click(function() {
                     $('#progress-bg').css("display", "none");
                     $('#progress').css("display", "none");
                     $('#progress-tip').css("display", "none");
-                }, 2000);
+                }, 1500);
             }
         },
         error: function(xhr, errorType, error) {

@@ -44,8 +44,8 @@ function getGoodsAmountByStoreId(store_id) {
 function addGoods(goods, date, manager,store_id) {
     var defer = Q.defer();
     pool.getConnection(function(err, connection) {
-        connection.query('INSERT INTO goods(goods_id,store_id,goods_name,price,stock,introduce,goods_source,manager,goods_date,cost,goods_state) VALUE(0,?,?,?,?,?,?,?,?,?,?)',
-            [parseInt(store_id),goods.goodsName, goods.goodsPrice, goods.goodsStock, goods.goodsIntroduce, goods.goodsSource, manager, date, goods.goodsCost, 0], function(err, result) {
+        connection.query('INSERT INTO goods(goods_id,store_id,goods_name,price,stock,introduce,goods_source,manager,goods_date,cost,goods_state,sales_num) VALUE(0,?,?,?,?,?,?,?,?,?,?,?)',
+            [parseInt(store_id),goods.goodsName, goods.goodsPrice, goods.goodsStock, goods.goodsIntroduce, goods.goodsSource, manager, date, goods.goodsCost, 0,0], function(err, result) {
                 if (!err) {
                     defer.resolve(result.insertId);
                 }

@@ -60,8 +60,13 @@ router.post('/addgoods', function(req, res, next) {
             return goodsDao.addGoods(goods_info, date, req.cookies.username, req.cookies.store_id);
         })
         .then(function(goods_id) {
-            goods_info.goods_id = goods_id;
-            return goodsDao.addGoodsImg(img_url, goods_id);
+            goods_info.goodsId = goods_id;
+            if(goods_info.imgLength > 0){
+                return goodsDao.addGoodsImg(img_url, goods_id);
+            }
+            else{
+                return true;
+            }
         })
         .then(function(type) {
             if (type) {
