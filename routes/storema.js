@@ -10,7 +10,7 @@ var util = require('../common/util.js');
 
 router.get('/', function(req, res, next) {
     if (req.cookies.user_type == '1' || req.cookies.user_type == '2') {
-        var store_id, store, goods, amount;
+        var store_id, store, goods, amount,page;
         storeDao.getStoreId(req.cookies.user_id)
             .then(function(s_id) {
                 store_id = s_id;
@@ -22,13 +22,21 @@ router.get('/', function(req, res, next) {
             })
             .then(function(ramount) {
                 amount = ramount;
-                return goodsDao.getGoodsByStoreId(store_id, 0, 20);
+                if(req.query.page){
+                    page = req.query.page;
+                    return goodsDao.getGoodsByStoreId(store_id, (page-1)*20, 20);
+                }
+                else{
+                    page = 1;
+                    return goodsDao.getGoodsByStoreId(store_id, 0, 20);
+                }
+                
             })
             .then(function(rgoods) {
                 goods = rgoods;
             })
             .finally(function() {
-                res.render('storema', { title: 'NMStore', username: req.cookies.username, user_type: req.cookies.user_type, store: store, goods: goods, amount: amount });
+                res.render('storema', { title: 'NMStore', username: req.cookies.username, user_type: req.cookies.user_type, store: store, goods: goods, amount: amount,page:page });
             });
     }
     else {

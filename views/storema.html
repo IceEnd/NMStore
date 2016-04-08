@@ -59,10 +59,16 @@
         <!-- /.container-fluid -->
     </nav>
 
-    <div class="container storema-container">
-        <div class="row">
-            <h3 class="col-sm-2"><%= store.name %></h3>
-        </div>
+    <div class="row store-nav-row container">
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active">
+                <a><%= store.name %></a>
+            </li>
+            <li role="presentation"><a href="javascript:;">查看订单</a></li>
+            <li role="presentation"><a href="javascript:;">商店信息</a></li>
+        </ul>
+    </div>
+    <div class="container storema-goods-container" id="storema-goods-container">
         <div class="row table-bar">
             <form class="navbar-form navbar-left" role="search">
                 <div class="form-group">
@@ -71,7 +77,6 @@
                 <button type="submit" class="btn btn-default">Search</button>
             </form>
             <button type="button" class="btn btn-primary navbar-right table-bar-btn store-nav-btn" data-toggle="modal" data-target="#addGoodsModal">添加商品</button>
-            <a class="btn btn-primary navbar-right table-bar-btn store-nav-btn">处理订单</a>
         </div>
         <div class="row">
             <table class="table table-striped" id="goods_table">
@@ -85,133 +90,201 @@
                 </thead>
                 <tbody id="goods_tbody">
                     <% for(var i=0; i < goods.length; i++){ %>
-                    <tr>
-                        <td>
-                            <a href="/goods?goods_id=<%= goods[i].goods_id %>" target="_blank">
-                            <p><%= goods[i].goods_id %></p>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="/goods?goods_id=<%= goods[i].goods_id %>" target="_blank">
-                            <%= goods[i].goods_name %>
-                            </a>
-                            (<%= goods[i].goods_source %>)
-                        </td>
-                        <td>
-                            <p>售价:<%= goods[i].price %></p>
-                            <p>成本:<%= goods[i].cost %></p>
-                            <p>库存:<%= goods[i].stock %></p>
-                        </td>
-                        <td>
-                            <p class="row-04-p"><%= goods[i].introduce %></p>
-                        </td>
-                        <td>
-                            <p>销量:<%= goods[i].sales_num %></p>
-                            <p>利润:<%= (goods[i].price - goods[i].cost)*goods[i].sales_num %>
-                        </td>
-                        <td>
-                            <a class="btn btn-default" href="#" role="button">修改</a>
-                            <a class="btn btn-default" href="#" role="button">增加库存</a>
-                            <a class="btn btn-default" href="#" role="button">下架</a>
-                        </td>
-                    </tr>
-                    <% } %>
+                        <tr>
+                            <td>
+                                <a href="/goods?goods_id=<%= goods[i].goods_id %>" target="_blank">
+                                    <p>
+                                        <%= goods[i].goods_id %>
+                                    </p>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/goods?goods_id=<%= goods[i].goods_id %>" target="_blank">
+                                    <%= goods[i].goods_name %>
+                                </a>
+                                (
+                                <%= goods[i].goods_source %>)
+                            </td>
+                            <td>
+                                <p>售价:
+                                    <%= goods[i].price %>
+                                </p>
+                                <p>成本:
+                                    <%= goods[i].cost %>
+                                </p>
+                                <p>库存:
+                                    <%= goods[i].stock %>
+                                </p>
+                            </td>
+                            <td>
+                                <p class="row-04-p">
+                                    <%= goods[i].introduce %>
+                                </p>
+                            </td>
+                            <td>
+                                <p>销量:
+                                    <%= goods[i].sales_num %>
+                                </p>
+                                <p>利润:
+                                    <%= (goods[i].price - goods[i].cost)*goods[i].sales_num %>
+                            </td>
+                            <td>
+                                <a class="btn btn-default" href="#" role="button">修改</a>
+                                <a class="btn btn-default" href="#" role="button">库存</a>
+                                <a class="btn btn-default" href="#" role="button">下架</a>
+                            </td>
+                        </tr>
+                        <% } %>
                 </tbody>
             </table>
         </div>
         <nav class="row">
-            <ul class="pagination pagination-lg">
+            <ul class="pagination pagination-lg" id="page-ul" data-current="<%= page %>">
+                <!--
+                这里是分页逻辑，因为是用模板引擎写的，所以很蛋疼！单元别出差错
+                -->
                 <% if(amount >= 0){ 
-                    var num = 1;
+                    var page_num = Math.ceil(amount/20);
+                    if(page != 1){
                 %>
-                    <li><a href="javascript:" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-                    </li>
-                    <% while(amount >= 0){ %>
-                        <% if(num == 1) {%>
-                        <li class="page-nav active"><a href="javascript:"><%= num %> <span class="sr-only">(current)</span></a></li>
-                        <% }else { %>
-                        <li class="page-nav"><a href="javascript:"><%= num %> <span class="sr-only">(current)</span></a></li>
-                        <% } %>
-                        <% amount = amount - 20; num++;} %>
-                            <li><a href="javascript:" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
-                 <% } %>
+                <li><a href="/storema?page=<%= page-1 %>" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>  
+                    <% } %>
+                    <% if(page_num <= 9){ 
+                            for(var page_i = 1; page_i <= page_num; page_i++){
+                     %>
+                     <li class="page-nav" data-page="<%= page_i %>">
+                         <a href="/storema?page=<%= page_i %>" class="store-goods-page"><%= page_i %></a>
+                     <li> 
+                            <% } %>
+                    <% } 
+                    else if(page_num > 9){
+                        if(page <= 5){
+                            for(var page_i = 1; page_i <= 6; page_i++){
+                    %>
+                    <li class="page-nav" data-page="<%= page_i %>">
+                         <a href="/storema?page=<%= page_i %>" class="store-goods-page"><%= page_i %></a>
+                     <li>   
+                            <% } %>
+                     <li class="page-nav">
+                         <a class="store-goods-page">...</a>
+                     <li>
+                     <li class="page-nav" data-page="<%= page_num-1 %>">
+                         <a href="/storema?page=<%= page_i %>" class="store-goods-page"><%= page_num-1 %></a>
+                     <li>
+                     <li class="page-nav" data-page="<%= page_num %>">
+                         <a href="/storema?page=<%= page_i %>" class="store-goods-page"><%= page_num %></a>
+                     <li>
+                        <% } 
+                        else if(page >5 && (page_num - page) <= 4){
+                        %>
+                     <li class="page-nav" data-page="1">
+                         <a href="/storema?page=1" class="store-goods-page">1</a>
+                     <li> 
+                         <li class="page-nav" data-page="2">
+                         <a href="/storema?page=2" class="store-goods-page">2</a>
+                     <li> 
+                     <li class="page-nav">
+                         <a class="store-goods-page">...</a>
+                     <li> 
+                     <%     for(var page_i = page_num-5; page_i <= page_num; page_i++){ %>
+                     <li class="page-nav" data-page="<%= page_i %>">
+                         <a href="/storema?page=<%= page_i %>" class="store-goods-page"><%= page_i %></a>
+                     <li>
+                            <% } %>
+                        <% } 
+                     else if(page >5 && (page_num - page)>4){
+                        %>
+                     <li class="page-nav" data-page="1"><a href="/storema?page=1" class="store-goods-page">1</a><li>
+                     <li class="page-nav" data-page="2"><a href="/storema?page=2" class="store-goods-page">2</a><li>
+                     <li class="page-nav"><a class="store-goods-page">...</a><li>
+                     <li class="page-nav" data-page="<%= page-1 %>"><a href="/storema?page=<%= page-1 %>" class="store-goods-page"><%= page-1 %></a><li>
+                     <li class="page-nav" data-page="<%= page %>"><a href="/storema?page=<%= page %>" class="store-goods-page"><%= page %></a><li>
+                     <li class="page-nav" data-page="<%= parseInt(page)+1 %>"><a href="/storema?page=<%= parseInt(page)+1 %>" class="store-goods-page"><%= parseInt(page)+1 %></a><li>
+                     <li class="page-nav"><a class="store-goods-page">...</a><li>
+                     <li class="page-nav" data-page="<%= page_num-1 %>"><a href="/storema?page=<%= page_num-1 %>" class="store-goods-page"><%= page_num-1 %></a><li>
+                     <li class="page-nav" data-page="<%= page_num %>"><a href="/storema?page=<%= page_num %>" class="store-goods-page"><%= page_num %></a><li>
+                     <% } %>
+                    <% } 
+                    if(page != page_num){
+                    %>
+                    <li><a href="javascript:" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+                <% }} %>
             </ul>
         </nav>
-    </div>
-
-    <!-- 模态框 -->
-    <div class="modal bs-example-modal-lg fade" id="addGoodsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-    data-type="add">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">添加商品</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal" id="goods-form">
-                        <div class="form-group">
-                            <label for="goods-name" class="col-sm-2 control-label">名称</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="goods-name" placeholder="商品名称">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="goods-source" class="col-sm-2 control-label">厂家</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="goods-source" placeholder="生产厂家">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="goods-price" class="col-sm-2 control-label">售价</label>
-                            <div class="col-sm-8">
-                                <input type="number" class="form-control" id="goods-price" placeholder="0" min="0" max="99999">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="goods-cost" id="little-lable" class="col-sm-2 control-label">成本</label>
-                            <div class="col-sm-8">
-                                <input type="number" class="form-control" id="goods-cost" placeholder="0" min="0" max="99999">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="goods-stock" class="col-sm-2 control-label">库存</label>
-                            <div class="col-sm-8">
-                                <input type="number" class="form-control" id="goods-stock" placeholder="0" min="0" max="99999">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="goods-introduce" class="col-sm-2 control-label">商品简介</label>
-                            <div class="col-sm-8">
-                                <textarea class="form-control" id="goods-introduce" rows="4"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label" for="upload-images" enctype='multipart/form-data'>选择图片</label>
-                            <div class="col-md-2">
-                                <input type="file" id="upload-images" multiple onchange="javascript:setImagePreview();">
-                            </div>
-                        </div>
-                        <div class="from-group preview-from-group">
-                            <div id="preview-div" class="col-md-10">
-
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="close-modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="add-goods-btn">添加商品</button>
-                </div>
-                
-                <div id="progress-bg"></div>
-                <div class="progress" id="progress">
-                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
-                    style="width: 100%">
-                        <span class="sr-only">100% Complete</span>
+        <!-- 模态框 -->
+        <div class="modal bs-example-modal-lg fade" id="addGoodsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        data-type="add">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">添加商品</h4>
                     </div>
-                </div> 
-                <h1 id="progress-tip">正在上传...</h1>
+                    <div class="modal-body">
+                        <form class="form-horizontal" id="goods-form">
+                            <div class="form-group">
+                                <label for="goods-name" class="col-sm-2 control-label">名称</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="goods-name" placeholder="商品名称">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="goods-source" class="col-sm-2 control-label">厂家</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="goods-source" placeholder="生产厂家">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="goods-price" class="col-sm-2 control-label">售价</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control" id="goods-price" placeholder="0" min="0" max="99999">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="goods-cost" id="little-lable" class="col-sm-2 control-label">成本</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control" id="goods-cost" placeholder="0" min="0" max="99999">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="goods-stock" class="col-sm-2 control-label">库存</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control" id="goods-stock" placeholder="0" min="0" max="99999">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="goods-introduce" class="col-sm-2 control-label">商品简介</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" id="goods-introduce" rows="4"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="upload-images" enctype='multipart/form-data'>选择图片</label>
+                                <div class="col-md-2">
+                                    <input type="file" id="upload-images" placeholder="一次可选9张" multiple onchange="javascript:setImagePreview();">
+                                </div>
+                            </div>
+                            <div class="from-group preview-from-group">
+                                <div id="preview-div" class="col-md-10">
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="close-modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="add-goods-btn">添加商品</button>
+                    </div>
+
+                    <div id="progress-bg"></div>
+                    <div class="progress" id="progress">
+                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                        style="width: 100%">
+                            <span class="sr-only">100% Complete</span>
+                        </div>
+                    </div>
+                    <h1 id="progress-tip">正在上传...</h1>
+                </div>
             </div>
         </div>
     </div>

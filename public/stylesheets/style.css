@@ -118,8 +118,9 @@ a,a:visited,a:hover{
     margin-left: 5%;
 }
 
-.storema-container{
+.nav-row{
     padding-top: 100px;
+    margin-bottom: 20px;
 }
 
 .table-bar{
@@ -188,6 +189,16 @@ a,a:visited,a:hover{
 
 .store-nav-btn{
     margin-left: 10px;
+}
+
+.btn-default{
+    margin: 5px;
+}
+
+.container.store-nav-row{
+    margin: 0 auto;
+    padding-top: 100px;
+    margin-bottom: 20px;
 }
 
 @media (max-width: 768px){

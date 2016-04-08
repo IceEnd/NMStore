@@ -1,3 +1,7 @@
+var imgType;
+var store_goods_page = $('#page-ul li');
+var current_page = $('#page-ul').data('current');
+
 //清楚cookie
 function clearCookie(array) {
     for (i in array) {
@@ -6,13 +10,21 @@ function clearCookie(array) {
     }
 }
 
-//设置cookie
-function setCookie() {
+//初始化
+function init() {
+    //设置cookie
     var store_id = $('body').attr('data-store');
     $.cookie('store_id', store_id, { expires: 7, path: '/' });
+    
+    console.log(current_page);
+    store_goods_page.each(function () {
+       if($(this).data('page') == current_page){
+           $(this).addClass('active');
+       }
+    });
 }
 
-setCookie();
+init();
 
 $('#logout').click(function() {
     console.log('sss');
@@ -20,9 +32,9 @@ $('#logout').click(function() {
     window.location.reload();
 });
 
-var imgType = [];
 
 function setImagePreview(avalue) {
+    $('#preview-div').children().remove();
     imgType = [];
     var imageInput = document.getElementById('upload-images');
     var preview_div = document.getElementById('preview-div');
@@ -45,6 +57,7 @@ function setImagePreview(avalue) {
         }
     }
 }
+
 
 $('#add-goods-btn').click(function() {
     if ($("#goods-name").val() == "" ||
@@ -95,12 +108,11 @@ $('#add-goods-btn').click(function() {
                     $('#progress').css("display", "none");
                     $('#progress-tip').css("display", "none");
                 }, 1000);
-                console.log(data.new_goods);
-                $('#goods_tbody').append('<tr><td><a href="/goods?goodsId='+data.new_goods.goodsId+'" target="_blank"><p>'+data.new_goods.goodsId+'</p></a></td><td><a href="/goods?goodsId='+
-                data.new_goods.goodsId+'" target="_blank">'+data.new_goods.goodsName+'</a>('+data.new_goods.goodsSource+')</td><td><p>售价: '+
-                data.new_goods.goodsPrice+'</p><p>成本: '+data.new_goods.goodsCost+'</p><p>库存: '+data.new_goods.goodsStock+
-                '</p></td><td><p class="row-04-p">'+data.new_goods.goodsIntroduce+'</p></td><td><p>销量:0</p><p>利润:0</td><td><a class="btn btn-default" href="#" role="button">修改</a><a class="btn btn-default" href="#" role="button">增加库存</a><a class="btn btn-default" href="#" role="button">下架</a></td></tr>');
-               
+                $('#goods_tbody').prepend('<tr><td><a href="/goods?goodsId=' + data.new_goods.goodsId + '" target="_blank"><p>' + data.new_goods.goodsId + '</p></a></td><td><a href="/goods?goodsId=' +
+                    data.new_goods.goodsId + '" target="_blank">' + data.new_goods.goodsName + '</a>(' + data.new_goods.goodsSource + ')</td><td><p>售价: ' +
+                    data.new_goods.goodsPrice + '</p><p>成本: ' + data.new_goods.goodsCost + '</p><p>库存: ' + data.new_goods.goodsStock +
+                    '</p></td><td><p class="row-04-p">' + data.new_goods.goodsIntroduce + '</p></td><td><p>销量:0</p><p>利润:0</td><td><a class="btn btn-default" href="#" role="button">修改</a><a class="btn btn-default" href="#" role="button">增加库存</a><a class="btn btn-default" href="#" role="button">下架</a></td></tr>');
+
             }
             else {
                 $('#progress-tip').html('网络连接错误,稍后再试');

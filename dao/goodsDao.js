@@ -6,8 +6,10 @@ var Q = require('q');
 function getGoodsByStoreId(store_id, start, amount) {
     var defer = Q.defer();
     pool.getConnection(function(err, connection) {
-        connection.query('SELECT * from goods where store_id = ' + store_id + ' order by goods_id limit ' + start + ',' + amount, function(err, result) {
-            if (!err) {
+        connection.query('select a.*,group_concat(b.src) from goods as a left join  goods_images as b  on (a.goods_id = b.goods_id) where a.store_id = ' + store_id + 
+        ' group by a.goods_id order by a.goods_id desc limit ' + start + ',' + amount, function(err, result) {
+            if (!err) {      
+                console.log(result);
                 defer.resolve(result);
             }
             else {
@@ -29,7 +31,6 @@ function getGoodsAmountByStoreId(store_id) {
             }
             else {
                 console.log(err);
-                // defer.reject(err);
             }
             connection.release();
         });
@@ -81,7 +82,6 @@ function addGoodsImg(images, good_id) {
                     defer.resolve(true);
                 }
                 else{
-                    console.log(err);
                     defer.reject(err);
                 }
             })
