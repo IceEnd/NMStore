@@ -6,10 +6,9 @@ var Q = require('q');
 function getGoodsByStoreId(store_id, start, amount) {
     var defer = Q.defer();
     pool.getConnection(function(err, connection) {
-        connection.query('select a.*,group_concat(b.src) from goods as a left join  goods_images as b  on (a.goods_id = b.goods_id) where a.store_id = ' + store_id + 
+        connection.query('select a.*,group_concat(b.images_id),group_concat(b.src) from goods as a left join  goods_images as b  on (a.goods_id = b.goods_id) where a.store_id = ' + store_id + 
         ' group by a.goods_id order by a.goods_id desc limit ' + start + ',' + amount, function(err, result) {
             if (!err) {      
-                console.log(result);
                 defer.resolve(result);
             }
             else {
@@ -60,9 +59,30 @@ function addGoods(goods, date, manager,store_id) {
 }
 
 /**
+ * 更新商品信息
+ */
+function updateGoods(goods,date,manager) {
+    var defer = Q.defer();
+    pool.getConnection(function (err,connection) {
+        connection.query('UPDATE goods set goods_source = "'+goods.goodsSource+'",price='+goods.goodsPrice+',cost='+goods.goodsCost+',stock='+goods.goodsStock+',introduce="'+goods.goodsIntroduce+'",manager="'+manager+
+        '" WHERE goods_id='+goods.goodsId,function (err,connection) {
+            if(!err){
+                defer.resolve(true);
+            }
+            else{
+                console.log(goods.goodsId);
+                console.log(err);
+                defer.reject(err);
+            }
+        })
+    });
+    return defer.promise;
+}
+
+/**
  * 添加商品图片
  */
-function addGoodsImg(images, good_id) {
+function addGoodsImg(images, goods_id) {
     var defer = Q.defer();
     if (images.length == 0) {
         refer.resolve(true);
@@ -70,7 +90,7 @@ function addGoodsImg(images, good_id) {
     else {
         var str = 'INSERT INTO goods_images(goods_id,src) VALUE ';
         for(var i = 0; i < images.length; i++){
-            str += '('+good_id+',"'+images[i]+'")';
+            str += '('+goods_id+',"'+images[i]+'")';
             if(i <= images.length -2){
                 str += ',';
             }
@@ -82,6 +102,7 @@ function addGoodsImg(images, good_id) {
                     defer.resolve(true);
                 }
                 else{
+                    console.log(err);
                     defer.reject(err);
                 }
             })
@@ -90,9 +111,70 @@ function addGoodsImg(images, good_id) {
     return defer.promise;
 }
 
+/**
+ * 删除商品图片
+ */
+function removeGoodsImg(goods_id) {
+    var defer = Q.defer();
+    pool.getConnection(function (err,connection) {
+        connection.query('delete from goods_images where goods_id='+goods_id,function (err,result) {
+            if(!err){
+                defer.resolve(true);
+            }
+            else{
+                defer.reject(err);
+            }
+        })
+    });
+    return defer.promise;
+}
+
+/**
+ * 添加库存
+ */
+function addGoodsStock(goods_id,stock,manager) {
+    var defer = Q.defer();
+    pool.getConnection(function (err,connection) {
+        connection.query('update goods set stock = '+stock+',manager ="'+manager+'" where goods_id='+goods_id,
+        function (err,result) {
+            if(!err){
+                defer.resolve(true);
+            }
+            else{
+                console.log(err);
+                defer.reject(err);
+            }
+        });
+    });
+    return defer.promise;
+}
+
+/**
+ * 商品下架
+ */
+function outOfSale(goods_id,manager) {
+    var defer = Q.defer();
+    pool.getConnection(function (err,connection) {
+        connection.query('update goods set goods_state = 1,manager ='+manager+' where goods_id='+goods_id,
+        function (err,result) {
+            if(!err){
+                defer.resolve(true);
+            }
+            else{
+                defer.reject(err);
+            }
+        });
+    });
+    return defer.promise;
+}
+
 module.exports = {
     getGoodsByStoreId: getGoodsByStoreId,
     getGoodsAmountByStoreId: getGoodsAmountByStoreId,
     addGoods: addGoods,
     addGoodsImg: addGoodsImg,
+    updateGoods:updateGoods,
+    removeGoodsImg:removeGoodsImg,
+    addGoodsStock:addGoodsStock,
+    outOfSale:outOfSale,
 }

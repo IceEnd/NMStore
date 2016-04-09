@@ -76,7 +76,7 @@
                 </div>
                 <button type="submit" class="btn btn-default">Search</button>
             </form>
-            <button type="button" class="btn btn-primary navbar-right table-bar-btn store-nav-btn" data-toggle="modal" data-target="#addGoodsModal">添加商品</button>
+            <button type="button" id="addGoodsBtn" class="btn btn-primary navbar-right table-bar-btn store-nav-btn" data-toggle="modal" data-target="#addGoodsModal">添加商品</button>
         </div>
         <div class="row">
             <table class="table table-striped" id="goods_table">
@@ -90,36 +90,34 @@
                 </thead>
                 <tbody id="goods_tbody">
                     <% for(var i=0; i < goods.length; i++){ %>
-                        <tr>
+                        <% if(goods[i].goods_state != 0){ %>
+                        <tr data-img='<%= goods[i]["group_concat(b.src)"] %>' id="goods-tr-<%= goods[i].goods_id %>" class="danger" style="cursor: not-allowed;">
+                        <% } else{ %>
+                        <tr data-img='<%= goods[i]["group_concat(b.src)"] %>' id="goods-tr-<%= goods[i].goods_id %>">
+                        <% } %>
+                        
                             <td>
                                 <a href="/goods?goods_id=<%= goods[i].goods_id %>" target="_blank">
-                                    <p>
-                                        <%= goods[i].goods_id %>
-                                    </p>
+                                    <p class="goods-id-items"><%= goods[i].goods_id %></p>
                                 </a>
                             </td>
                             <td>
-                                <a href="/goods?goods_id=<%= goods[i].goods_id %>" target="_blank">
-                                    <%= goods[i].goods_name %>
-                                </a>
-                                (
-                                <%= goods[i].goods_source %>)
+                                <a class="goods-name-items" href="/goods?goods_id=<%= goods[i].goods_id %>" target="_blank"><%= goods[i].goods_name %></a>
+                                (<b class="goods-source-items"><%= goods[i].goods_source %></b>)
                             </td>
                             <td>
                                 <p>售价:
-                                    <%= goods[i].price %>
+                                    <a class="goods-price-items"><%= goods[i].price %></a>
                                 </p>
                                 <p>成本:
-                                    <%= goods[i].cost %>
+                                    <a class="goods-cost-items"><%= goods[i].cost %></a>
                                 </p>
                                 <p>库存:
-                                    <%= goods[i].stock %>
+                                    <a class="goods-stock-items"><%= goods[i].stock %></a>
                                 </p>
                             </td>
                             <td>
-                                <p class="row-04-p">
-                                    <%= goods[i].introduce %>
-                                </p>
+                                <p class="row-04-p goods-introduce-items"><%= goods[i].introduce %></p>
                             </td>
                             <td>
                                 <p>销量:
@@ -129,9 +127,13 @@
                                     <%= (goods[i].price - goods[i].cost)*goods[i].sales_num %>
                             </td>
                             <td>
-                                <a class="btn btn-default" href="#" role="button">修改</a>
-                                <a class="btn btn-default" href="#" role="button">库存</a>
-                                <a class="btn btn-default" href="#" role="button">下架</a>
+                                <% if(goods[i].goods_state == 1){ %>
+                                <p>该商品已经下架</p>
+                                <% }else{ %>
+                                <a class="btn btn-default updateGoodsBtn" role="button" data-toggle="modal" data-target="#addGoodsModal">修改</a>
+                                <a class="btn btn-default addStockBtn" role="button" data-toggle="modal" data-target="#addStockModal">添货</a>
+                                <a class="btn btn-default out-sale" role="button">下架</a>
+                                <% } %>
                             </td>
                         </tr>
                         <% } %>
@@ -211,9 +213,9 @@
                 <% }} %>
             </ul>
         </nav>
-        <!-- 模态框 -->
+        <!-- 添加商品模态框 -->
         <div class="modal bs-example-modal-lg fade" id="addGoodsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        data-type="add">
+        data-type="0">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -273,7 +275,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" id="close-modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="add-goods-btn">添加商品</button>
+                        <button type="button" class="btn btn-primary" id="add-goods-btn" data-url="/storema/addgoods" data-type='0'>添加商品</button>
                     </div>
 
                     <div id="progress-bg"></div>
@@ -287,6 +289,35 @@
                 </div>
             </div>
         </div>
+        
+        <!-- 修改库存模态框 -->
+        <div class="modal fade" id="addStockModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" id="goods-form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">库存</label>
+                                <label class="col-sm-1 control-label" id="add-stock-stock"></label>
+                                <label class="col-sm-1 control-label">+</label>
+                                <div class="col-sm-4">
+                                    <input type="number" id="add-stock-num" class="form-control" id="add-stock-num" placeholder="库存" min="0" max="99999">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="add-stock-close">Close</button>
+                        <button type="button" class="btn btn-primary" id="add-stock-btn">确认</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+        
     </div>
     <script type="text/javascript" src="/javascripts/libs/bootstrap.min.js"></script>
     <script type="text/javascript" src="/javascripts/storema.js"></script>
