@@ -201,8 +201,36 @@ a,a:visited,a:hover{
     margin-bottom: 20px;
 }
 
+#index-container{
+    padding-top: 120px;
+}
+
+.grid-item .thumbnail{
+    height: 250px;
+    line-height: 250px;
+    overflow: hidden;
+}
+
+.grid-item .thumbnail>span{
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    vertical-align: center;
+    border: 1px solid #dddddd;
+    overflow: hidden;
+}
+
+.grid-item .thumbnail>span>img{
+    width: 100%;
+}
+
 @media (max-width: 768px){
     .login_main{
         width: 100%;
+    }
+    
+    .grid-item .thumbnail{
+        height: auto;
+        line-height: normal;
     }
 }

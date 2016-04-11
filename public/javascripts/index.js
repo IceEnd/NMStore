@@ -6,7 +6,6 @@ function clearCookie(array){
 }
 
 $('#logout').click(function(){
-    console.log('sss');
     clearCookie(['user_id','username','user_type','store_id']); 
     window.location.reload();
 });

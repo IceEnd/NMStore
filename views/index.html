@@ -16,6 +16,9 @@
 
     <script src="/javascripts/libs/jquery-2.2.2.min.js"></script>
     <script src="/javascripts/libs/jquery.cookie.js"></script>
+    <script>
+        
+    </script>
 </head>
 
 <body>
@@ -71,10 +74,28 @@
             <button type="submit" class="btn btn-default">Search</button>
         </form>
     </div>
-    <p>Welcome to
-        <%= title %>
-    </p>
-
+   
+    <div class="container" id="index-container" date-amountt="<%= amount %>">
+        <ul class="container-fluid" id="grid">
+            <% for(var i = 0; i < goods.length; i++) { 
+            if(goods[i]['group_concat(b.src)'] != null){
+                var src = goods[i]['group_concat(b.src)'];
+                src = src.split(',')[0];
+            }
+            else{
+                src = '/images/upload/goods.png';
+            }
+            %>
+            <li class="col-md-3 grid-item">
+                <div class="thumbnail">
+                    <span>
+                        <img src='<%= src %>' alt="商品图片">
+                    </span>
+                </div>
+            </li>
+            <% } %>
+        </ul>
+    </div>
     <script type="text/javascript" src="/javascripts/libs/bootstrap.min.js"></script>
     <script type="text/javascript" src="/javascripts/index.js"></script>
 </body>
