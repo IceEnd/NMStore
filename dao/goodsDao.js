@@ -12,6 +12,7 @@ function getGoodsByStoreId(store_id, start, amount) {
                 defer.resolve(result);
             }
             else {
+
                 console.log(err);
                 defer.reject(err);
             }
@@ -29,6 +30,7 @@ function getGoodsAmountByStoreId(store_id) {
                 defer.resolve(result[0]['count(*)']);
             }
             else {
+                 console.log(123);
                 console.log(err);
                 defer.reject(err);
             }
@@ -41,7 +43,7 @@ function getGoodsAmountByStoreId(store_id) {
 function getGoods(start, amount) {
     var defer = Q.defer();
     pool.getConnection(function (err,connection) {
-        connection.query('select a.*,group_concat(b.images_id),group_concat(b.src) from goods as a left join  goods_images as b  on (a.goods_id = b.goods_id) where goods_state = 0'+
+        connection.query('select a.*,group_concat(b.images_id),group_concat(b.src),c.name from goods as a left join  goods_images as b  on (a.goods_id = b.goods_id) left join store as c on(a.store_id = c.store_id) where goods_state = 0'+
         ' group by a.goods_id order by a.goods_id desc limit ' + start + ',' + amount,function (err,result) {
             if(!err){
                 defer.resolve(result);
@@ -59,7 +61,7 @@ function getGoods(start, amount) {
 function getGoodsAmount() {
     var defer = Q.defer();
     pool.getConnection(function(err, connection) {
-        connection.query('SELECT count(*) from goods', function(err, result) {
+        connection.query('SELECT count(*) from goods where goods_state = 0', function(err, result) {
             if (!err) {
                 defer.resolve(result[0]['count(*)']);
             }

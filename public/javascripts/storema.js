@@ -4,7 +4,7 @@ var current_page = $('#page-ul').data('current');
 var modalState = 0;  //0:add 1:update
 var preview_div = document.getElementById('preview-div');
 
-//清楚cookie
+//清除cookie
 function clearCookie(array) {
     for (i in array) {
         console.log(array[i]);
@@ -16,8 +16,9 @@ function clearCookie(array) {
 function init() {
     //设置cookie
     var store_id = $('body').attr('data-store');
+    var store_name = $('body').attr('data-name');
     $.cookie('store_id', store_id, { expires: 7, path: '/' });
-
+    $.cookie('store_name',store_name,{ expires: 7, path: '/' })
     store_goods_page.each(function() {
         if ($(this).data('page') == current_page) {
             $(this).addClass('active');

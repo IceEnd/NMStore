@@ -18,7 +18,7 @@
     <script src="/javascripts/libs/jquery.cookie.js"></script>
 </head>
 
-<body data-store="<%= store.store_id %>">
+<body data-store="<%= store.store_id %>" data-name='<%= store.name %>'>
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -47,7 +47,7 @@
                             欢迎, <%= username %><span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">个人中心</a></li>
-                            <li><a href="/store">进入店铺</a></li>
+                            <li><a href="/storema">进入店铺</a></li>
                             <li><a>处理订单</a></li>
                             <li><a id="logout" href="javascript:">登出</a></li>
                         </ul>
@@ -97,12 +97,12 @@
                         <% } %>
                         
                             <td>
-                                <a href="/goods?goods_id=<%= goods[i].goods_id %>" target="_blank">
+                                <a href="/goods?gid=<%= goods[i].goods_id %>" target="_blank">
                                     <p class="goods-id-items"><%= goods[i].goods_id %></p>
                                 </a>
                             </td>
                             <td>
-                                <a class="goods-name-items" href="/goods?goods_id=<%= goods[i].goods_id %>" target="_blank"><%= goods[i].goods_name %></a>
+                                <a class="goods-name-items" href="/goods?gid=<%= goods[i].goods_id %>" target="_blank"><%= goods[i].goods_name %></a>
                                 (<b class="goods-source-items"><%= goods[i].goods_source %></b>)
                             </td>
                             <td>

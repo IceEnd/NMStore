@@ -205,23 +205,60 @@ a,a:visited,a:hover{
     padding-top: 120px;
 }
 
-.grid-item .thumbnail{
+
+.grid-item .thumbnail>a>span{
     height: 250px;
     line-height: 250px;
-    overflow: hidden;
-}
-
-.grid-item .thumbnail>span{
-    width: 100%;
-    height: 100%;
     display: inline-block;
     vertical-align: center;
     border: 1px solid #dddddd;
     overflow: hidden;
+    cursor: pointer;
 }
 
-.grid-item .thumbnail>span>img{
+.grid-item .thumbnail>a>span>img{
     width: 100%;
+}
+
+.price{
+    color: red;
+}
+
+.desc_div{
+    height: 60px;
+    overflow: hidden;
+}
+
+.index-goods-info{
+    padding: 5px 0;
+}
+
+.index-goods-info a{
+    float: left;
+}
+
+.index-goods-info h6{
+    display: inline-block;
+    float: right;
+    margin: 0;
+    padding: 0;
+}
+
+.desc_div p{
+    color: #666666;
+}
+
+.index-goods-name{
+    color: #333333;
+}
+
+.loadmore{
+    text-align: center;
+    padding: 10px 0;
+}
+
+.loadmore>a{
+    cursor: pointer;
 }
 
 @media (max-width: 768px){

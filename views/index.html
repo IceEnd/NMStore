@@ -88,13 +88,42 @@
             %>
             <li class="col-md-3 grid-item">
                 <div class="thumbnail">
-                    <span>
-                        <img src='<%= src %>' alt="商品图片">
-                    </span>
+                    <a href="/goods?gid=<%= goods[i].goods_id %>">
+                        <span><img src='<%= src %>' alt="商品图片"></span>
+                    </a>
+                    <div class="caption">
+                        <h4 class="price">￥<%= goods[i].price %></h4>
+                        
+                        <h4 class="index-goods-name">
+                            <a href="/goods?gid=<%= goods[i].goods_id %>"><%= goods[i].goods_name %></a>
+                        </h4>
+                        
+                        <div class="desc_div">
+                            <a href="/goods?gid=<%= goods[i].goods_id %>">
+                                <p><%= goods[i].introduce %></p>
+                            </a>
+                        </div>
+                        <div class="index-goods-info">
+                            <a href="/store?sid=<%= goods[i].store_id %>">
+                                <%= goods[i].name %>
+                            </a>
+                            <h6>
+                                <%= goods[i].goods_source %>
+                            </h6>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
                 </div>
             </li>
             <% } %>
         </ul>
+        <div class="loadmore">
+            <% if(goods.length == 0) { %>
+            <a>加载到底</a>
+            <% }else{ %>
+            <a id="more-btn">加载更多</a>
+            <% } %>
+        </div>
     </div>
     <script type="text/javascript" src="/javascripts/libs/bootstrap.min.js"></script>
     <script type="text/javascript" src="/javascripts/index.js"></script>
