@@ -1,0 +1,119 @@
+/* reset */
+*{
+    margin:0;
+    padding:0;
+    list-style-type:none;
+    font-family: 'Microsoft Yahei', '宋体', arial, 'Hiragino Sans GB', Helvetica;
+}
+
+label{
+    cursor:pointer;
+}
+
+img{
+    vertical-align:middle;
+}
+
+table{
+    empty-cells:show;
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+abbr,acronym{
+    border:0;
+    font-variant:normal;
+}
+
+address,caption,cite,code,dfn,em,th,var,optgroup{
+    font-style:normal;
+    font-weight:normal;
+}
+
+input,button,textarea,select,optgroup,option{
+    font-family:inherit;
+    font-size:inherit;
+    font-style:inherit;
+    font-weight:inherit;
+}
+
+input,button,textarea,select{
+    *font-size:100%;
+}
+
+a,img{
+    border:0;
+}
+
+a,a:visited,a:hover{
+    color:#5e5e5e; 
+    text-decoration:none;
+}
+
+.clear{
+    clear: both;
+}
+
+/*common*/
+.navbar.navbar-default.navbar-fixed-top{
+    margin-bottom: 0;
+}
+
+/*login*/
+.navbar.navbar-default.navbar-fixed-top.search .navbar-form .form-group input{
+    width: 100%;    
+}
+
+.login_main{
+    margin: 100px auto 0 auto;
+    width: 80%;
+    overflow: hidden;
+    max-width: 700px;
+    position: relative;
+}
+
+.login-action{
+    width: 300%;
+    position: relative;
+}
+
+.login-action .login-action-1,.login-action .login-action-2,.login-action .login-action-3{
+    width: 33%;
+    float: left;
+    padding: 40px;
+}
+
+.selectpicker-div{
+    height: 34px;
+    line-height: 34px;
+}
+
+.pager li>a, .pager li>span{
+    cursor: pointer;
+}
+
+.login-alert{
+    position: absolute;
+    top: 10px;
+    width: 90%;
+    margin-left: 5%;
+}
+
+.nav-row{
+    padding-top: 100px;
+    margin-bottom: 20px;
+}
+
+.row-04-p{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+@media (max-width: 768px){
+    .login_main{
+        width: 100%;
+    } 
+}

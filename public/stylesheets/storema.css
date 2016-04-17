@@ -1,0 +1,69 @@
+.container.store-nav-row{
+    margin: 0 auto;
+    padding-top: 100px;
+    margin-bottom: 20px;
+}
+
+.table-bar{
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.table-bar .table-bar-btn{
+    margin-right: 0;
+}
+
+#preview-div{
+    margin: 0 auto;
+    height: 50px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#preview-div img{
+    height: 48px;
+    width: auto;
+    border: 1px rosybrown solid;
+    margin-left: 5px;
+}
+
+.preview-from-group{
+    overflow: hidden;
+}
+
+#progress{
+    position: absolute;
+    top: 50%;
+    width: 80%;
+    left: 10%;
+    display: none;
+}
+
+#progress-bg{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background: #000000;
+    opacity: 0.5;
+    display: none;
+}
+
+#progress-tip{
+    position: absolute;
+    bottom: 35%;
+    height: 20px;
+    font-size: 18px;
+    font-weight: lighter;
+    color: #f7f7f7;
+    text-align: center;
+    width: 100%;
+    display: none;
+}
+
+.store-nav-btn{
+    margin-left: 10px;
+}
+
+.btn-default{
+    margin: 5px;
+}

@@ -91,7 +91,7 @@ create table delivery(
     wordker varchar(20),
     palce varchar(20),
     primary key(delivery_id)
-) default CHARSET=utf8;
+) engine=innodb default CHARSET=utf8;
 
 //�м���
 use nmstore;
@@ -107,24 +107,16 @@ create table store_users_orders_deli(
     foreign key(user_id) references users(user_id),
     foreign key(manager_id) references users(user_id),
     foreign key(delivery_id) references delivery(delivery_id)
-) default CHARSET=utf8;
+) engine=innodb default CHARSET=utf8;
 
 //cars(���ﳵ)
 create table cars(
-	car_id integer not null,
+	car_id BIGINT not null AUTO_INCREMENT,
 	user_id integer not null,
-	username  varchar(20) not null,
+    goods_id BIGINT not null,
+    goods_num INTEGER not null,
+    car_date DATE not null,
 	primary key(car_id),
-	foreign key(user_id) references users(user_id)
-) default CHARSET=utf8;
-
-//users_cars_goods
-create table users_cars_goods(
-	usg_id bigint not null AUTO_INCREMENT,
-	car_id integer not null,
-	goods_id bigint not null,
-	usg_date date not null,
-	primary key (usg_id),
-	foreign key(car_id) references cars(car_id),
-	foreign key(goods_id)references goods(goods_id)
-) default CHARSET=utf8;
+	foreign key(user_id) references users(user_id),
+    foreign key(goods_id) references goods(goods_id)
+)engine=innodb default CHARSET=utf8;

@@ -12,7 +12,6 @@ function getGoodsByStoreId(store_id, start, amount) {
                 defer.resolve(result);
             }
             else {
-
                 console.log(err);
                 defer.reject(err);
             }
@@ -71,6 +70,27 @@ function getGoodsAmount() {
             }
             connection.release();
         });
+    });
+    return defer.promise;
+}
+
+/**
+ * 根据商品ID查找商品
+ */
+function  getGoodsByGoodsId(gid) {
+    var defer = Q.defer();
+    pool.getConnection(function (err,connection) {
+       connection.query('select a.*,group_concat(b.images_id),group_concat(b.src),c.* from goods as a left join  goods_images as b  on (a.goods_id = b.goods_id) left join store as c on(a.store_id = c.store_id) where a.goods_state = 0 AND a.goods_id = '+
+       gid,function (err,result) {
+          if(!err){
+              defer.resolve(result);
+          } 
+          else{
+              console.log(err);
+              defer.reject(err);
+          }
+          connection.release();
+       });
     });
     return defer.promise;
 }
@@ -210,6 +230,7 @@ module.exports = {
     getGoodsAmountByStoreId: getGoodsAmountByStoreId,
     getGoodsAmount:getGoodsAmount,
     getGoods:getGoods,
+    getGoodsByGoodsId:getGoodsByGoodsId,
     addGoods: addGoods,
     addGoodsImg: addGoodsImg,
     updateGoods:updateGoods,

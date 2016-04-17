@@ -13,6 +13,7 @@ var crypto = require('crypto');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var storema = require('./routes/storema');
+var goods = require('./routes/goods');
 
 var app = express();
 var accessLogStream = fs.createWriteStream('./logs/access.log', {flags: 'a'})
@@ -40,6 +41,7 @@ app.use(connect.session({
 app.use('/', routes);
 app.use('/users', users);
 app.use('/storema',storema);
+app.use('/goods',goods);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -11,14 +11,12 @@
     <meta name="apple-mobile-app-capable" content="yes">
     <meta name="apple-mobile-app-status-bar-style" content="black">
 
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/common.css' />
+    <link rel="stylesheet" href="/stylesheets/index.css" />
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
 
     <script src="/javascripts/libs/jquery-2.2.2.min.js"></script>
     <script src="/javascripts/libs/jquery.cookie.js"></script>
-    <script>
-        
-    </script>
 </head>
 
 <body>
@@ -75,7 +73,7 @@
         </form>
     </div>
    
-    <div class="container" id="index-container" date-amountt="<%= amount %>">
+    <div class="container" id="index-container" date-amount="<%= amount %>">
         <ul class="container-fluid" id="grid">
             <% for(var i = 0; i < goods.length; i++) { 
             if(goods[i]['group_concat(b.src)'] != null){
@@ -83,7 +81,7 @@
                 src = src.split(',')[0];
             }
             else{
-                src = '/images/upload/goods.png';
+                var src = '/images/upload/goods.png';
             }
             %>
             <li class="col-md-3 grid-item">

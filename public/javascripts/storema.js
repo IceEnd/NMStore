@@ -18,7 +18,6 @@ function init() {
     var store_id = $('body').attr('data-store');
     var store_name = $('body').attr('data-name');
     $.cookie('store_id', store_id, { expires: 7, path: '/' });
-    $.cookie('store_name',store_name,{ expires: 7, path: '/' })
     store_goods_page.each(function() {
         if ($(this).data('page') == current_page) {
             $(this).addClass('active');

@@ -52,7 +52,7 @@ router.post('/addgoods', function(req, res, next) {
     util.mkdirUpload(uploadDir)
         .then(function(flag) {
             if (flag) {
-                uploadDir = "./public/upload/" + date.getFullYear() + "/" + date.getMonth();
+                uploadDir = "./public/upload/" + date.getFullYear() + "/" + (date.getMonth()+1);
                 return util.mkdirUpload(uploadDir)
             }
         })

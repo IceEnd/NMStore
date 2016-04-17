@@ -1,6 +1,6 @@
 var page = 0;
 
-//清楚cookie
+//清除cookie
 function clearCookie(array){
     for(i in array){
         $.removeCookie(array[i]);
