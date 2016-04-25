@@ -8,7 +8,7 @@ function clearCookie(array){
 }
 
 $('#logout').click(function(){
-    clearCookie(['user_id','username','user_type','store_id']); 
+    clearCookie(['user_id','username','user_type','store_id','car']); 
     window.location.reload();
 });
 

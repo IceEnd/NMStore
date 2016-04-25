@@ -14,6 +14,8 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var storema = require('./routes/storema');
 var goods = require('./routes/goods');
+var shopping = require('./routes/shopping');
+var car = require('./routes/car');
 
 var app = express();
 var accessLogStream = fs.createWriteStream('./logs/access.log', {flags: 'a'})
@@ -42,6 +44,8 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/storema',storema);
 app.use('/goods',goods);
+app.use('/shopping',shopping);
+app.use('/car',car);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -74,7 +78,5 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
-
 module.exports = app;
-app.listen(3000);
+app.listen(8000);

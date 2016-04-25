@@ -33,7 +33,6 @@ router.get('/', function (req, res, next) {
 router.post('/addcar', function (req, res, next) {
     var fdate = new Date();
     date = fdate.getFullYear()+'-'+(fdate.getMonth()+1)+'-'+fdate.getDate()+' '+fdate.getHours()+':'+fdate.getMinutes()+':'+fdate.getSeconds();
-    console.log(date);
     var car = JSON.parse(req.body.car);
     var updateCar = {};
     carsDao.getCarsByUserId(req.cookies.user_id)
@@ -75,4 +74,4 @@ router.post('/addcar', function (req, res, next) {
         });
 });
 
-module.exports = router;
+module.exports = router; 

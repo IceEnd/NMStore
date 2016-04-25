@@ -14,6 +14,13 @@ $('.store-a').click(function() {
     $('.login-action').stop(true, false).animate({ "left": -width }, 500);
 });
 
+//清除cookie
+function clearCookie(array){
+    for(i in array){
+        $.removeCookie(array[i]);
+    }
+}
+
 //警告框自动消失
 function alertHide() {
     setTimeout(function() {
@@ -48,6 +55,7 @@ $('.sigin-in-form').submit(function() {
                     $.cookie('user_id',data.user_id, { expires: 7 ,path: "/"});
                     $.cookie('username',username,{ expires: 7 ,path: "/"});
                     $.cookie('user_type',user_type,{ expires: 7 ,path: "/"});
+                    $.cookie('car',user_type,{ expires: -1 ,path: "/"});
                     // alert('登陆成功');
                     window.location = '/';
                 }

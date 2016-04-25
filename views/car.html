@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <title>NMStore</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="author" content="Cononico" />
+    <meta name="application-name" content="NMStore" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8" />
+    <meta name="apple-mobile-app-capable" content="yes">
+    <meta name="apple-mobile-app-status-bar-style" content="black">
+
+    <link rel='stylesheet' href='/stylesheets/common.css' />
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
+
+    <script src="/javascripts/libs/jquery-2.2.2.min.js"></script>
+    <script src="/javascripts/libs/jquery.cookie.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <%= title %>
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">首页 <span class="sr-only">(current)</span></a></li>
+                    <li class="active"><a href="/car">购物车</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <% if(user != ''){ %>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <%= user %><span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">个人中心</a></li>
+                                <% if(user_type == 1 || user_type == 2){%>
+                                    <li><a href="/storema">进入店铺</a></li>
+                                    <li><a href="">处理订单</a></li>
+                                    <% } %>
+                                        <li><a id="logout" href="javascript:">登出</a></li>
+                            </ul>
+                        </li>
+                        <%}else{%>
+                            <li><a href="/users/login">Login</a></li>
+                            <% } %>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    
+    <div class="container" style="padding-top:100px;">
+        <div style="margin:10px 0;text-align:right;">
+            <a role="button" class="btn btn-success" id="del-btn">删除</a>
+            <a role="button" class="btn btn-default" id="pay-btn">结算</a>
+        </div>
+        
+        <div class="panel panel-default">
+            <div class="panel-body">购物车列表</div>
+            <table class="table" id="car_table">
+                 <thead>
+                    <tr>
+                        <th class="col-lg-1 col-md-1">选中</th>
+                        <th class="col-lg-1 col-md-1">商品编号</th>
+                        <th class="col-lg-2 col-md-2">商品名称</th>
+                        <th class="col-lg-2 col-md-2">预览</th>
+                        <th class="col-lg-4 col-md-4">商品信息</th>
+                        <th class="col-lg-2 col-md-2">购买数量</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i = 0; i < goods.length; i++) {%>
+                    <% if(goods[i].src != null){
+                        var src = goods[i].src;
+                       }else{
+                        var src = '/images/upload/goods.png';
+                       }
+                    %>
+                    <tr>
+                        <td class="col-lg-1 col-md-1">
+                            <input type="checkbox" value="<%=goods[i].goods_id %>" name="checkbox" data-car="<%=goods[i].car_id %>">
+                        </td>
+                        <td class="col-lg-1 col-md-1">
+                            <a href="/goods?gid=<%=goods[i].goods_id %>">
+                                <%=goods[i].goods_id %>
+                            </a>
+                        </td>
+                        <td class="col-lg-2 col-md-2">
+                            <a href="/goods?gid=<%=goods[i].goods_id %>">
+                                <%=goods[i].goods_name %>
+                            </a>
+                        </td>
+                        <td class="col-lg-2 col-md-2">
+                            <img src='<%=src %>' style="max-width:100%;max-height:150px;">
+                        </td>
+                        <td class="col-lg-4 col-md-4">
+                            <p style="padding: 0 10px;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 4;-webkit-box-orient: vertical;">
+                                <%=goods[i].introduce %>
+                            </p>
+                        </td>
+                        <td class="col-lg-2 col-md-2">
+                            <h5 style="display:inline-block;"><%=goods[i].price %></h5>*
+                            <h5 style="display:inline-block;"><%=goods[i].goods_num %> </h5>=
+                            <h5 style="display:inline-block;color:red;">￥<%=goods[i].price*goods[i].goods_num %></h5>
+                        </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+        <div style="text-align:center;cursor: pointer;"><a id="loadMore">加载更多</a></div>
+    </div>
+    
+    <script type="text/javascript" src="/javascripts/car.js"></script>
+    <script type="text/javascript" src="/javascripts/libs/bootstrap.min.js"></script>
+</body>
+</html>

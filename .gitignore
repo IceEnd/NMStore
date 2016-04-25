@@ -2,3 +2,5 @@
 /.vscode/
 /typings/
 /logs/
+/jsconfig.json
+/public/upload/2016/

@@ -7,7 +7,6 @@ var preview_div = document.getElementById('preview-div');
 //清除cookie
 function clearCookie(array) {
     for (i in array) {
-        console.log(array[i]);
         $.removeCookie(array[i]);
     }
 }
@@ -106,7 +105,7 @@ $('#addGoodsBtn').click(function() {
 
 $('#logout').click(function() {
     console.log('sss');
-    clearCookie(['user_id', 'username', 'user_type', 'store_id']);
+    clearCookie(['user_id', 'username', 'user_type', 'store_id','car']);
     window.location.reload();
 });
 

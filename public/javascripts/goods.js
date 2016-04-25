@@ -7,7 +7,7 @@ function clearCookie(array){
 
 //登出
 $('#logout').click(function(){
-    clearCookie(['user_id','username','user_type','store_id','store_name']); 
+    clearCookie(['user_id','username','user_type','store_id','store_name','car']); 
     window.location.reload();
 });
 
@@ -87,4 +87,16 @@ $('#car_btn').click(function () {
             $('#number').val(0);
         }
     }
+});
+
+//立即购买
+$('#buy_btn').click(function () {
+    if($('#number').val() == 0){
+        alert('请选择商品数目');
+        return ;
+    }
+    
+    var gid = $('#buy_btn').attr('data-goods');
+    var num = $('#number').val();
+    window.location.href = '/shopping?gid='+gid+'&num='+num;
 });

@@ -12,14 +12,11 @@
     <meta name="apple-mobile-app-status-bar-style" content="black">
 
     <link rel='stylesheet' href='/stylesheets/common.css' />
-    <link rel='stylesheet' href='/stylesheets/goods.css' />
+    <link rel='stylesheet' href='/stylesheets/shopping.css' />
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
 
     <script src="/javascripts/libs/jquery-2.2.2.min.js"></script>
     <script src="/javascripts/libs/jquery.cookie.js"></script>
-    <script>
-
-    </script>
 </head>
 
 <body>
@@ -68,12 +65,24 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
-
-    <div class="container goods-container">
-        <div class="row ">
-            <div class="goods-images-div col-md-6">
-                <%
-                    var src;
+    
+    <div class="container shopping-container">
+        <div class="panel panel-default">
+            <div class="panel-body">订单列表</div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-lg-2 col-md-2">商品编号</th>
+                        <th class="col-lg-2 col-md-2">商品名称</th>
+                        <th class="col-lg-2 col-md-2">预览</th>
+                        <th class="col-lg-4 col-md-4">商品信息</th>
+                        <th class="col-lg-2 col-md-2">购买数量</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <% if(type == 0){ %>
+                <!-- 直接购买 -->
+                <% var src,all_total = 0;
                     if(goods['group_concat(b.src)'] != null){
                         src = goods['group_concat(b.src)'].split(',');
                     }
@@ -84,79 +93,40 @@
                         goods.store_img = '/images/upload/store.jpg';
                     }
                 %>
-                    <img src="<%= src[0] %>">
-            </div>
-            <div class="goods-order-div col-md-6">
-                <h3><%= goods.goods_name %>
-                    <span class="label label-success"><%= goods.goods_source %></span>
-                    <a href="/store?sid=<%= goods.store_id %>">
-                        <span class="label label-default"><%= goods.name %></span>
-                    </a>
-                </h3>
-                <div class="row delivery-div">
-                    <h4 class="col-md-2">地址</h4>
-                    <h4 class="col-md-10"><%= goods.address %></h4>
-                </div>
-                <div class="row price-div">
-                    <h5 class="col-md-2 price-lable">售价</h5>
-                    <h2 class="col-md-10 price-h"><i>￥</i><%= goods.price %></h2>
-                </div>
-                <div class="row sales-div">
-                    <h5 class="col-md-2 number-laber">总销售</h5>
-                    <h5 class="col-md-10"><%= goods.sales_num %>件</h5>
-                </div>
-                <div class="row number-div">
-                    <h5 class="col-md-2 number-laber">购买数量</h5>
-                    <form class="col-md-4 number-form">
-                        <input id="number" type="number" class="form-control" min="0" max="<%= goods.stock %>" value="0">
-                    </form>
-                    <h5 class="col-md-6">库存<%= goods.stock %>件</h5>
-                </div>
-                <div class="row button-div">
-                    <button type="button" id="buy_btn" class="btn btn-default btn-lg col-md-4" data-goods="<%= goods.goods_id %>">立即购买</button>
-                    <button type="button" id="car_btn" class="btn btn-primary btn-lg col-md-4" data-goods="<%= goods.goods_id %>">加入购物车</button>
-                </div>
-            </div>
+                    <tr class="goods_item">
+                        <td class="col-lg-2 col-md-2">
+                            <a href="/goods?gid=<%= goods.goods_id %>"><%= goods.goods_id %></a>
+                        </td>
+                        <td class="col-lg-2 col-md-2">
+                            <a href="/goods?gid=<%= goods.goods_id %>">
+                                <%= goods.goods_name %>
+                            </a>
+                        </td>
+                        <td class="col-lg-2 col-md-2">
+                            <img src="<%=src[0] %>" style="max-width:100%; max-height:300px;">
+                        </td>
+                        <td class="col-lg-4 col-md-4">
+                            <p class="introduce-p"><%= goods.introduce %></p>
+                        </td>
+                        <td class="col-lg-2 col-md-2">
+                            <h5 class="price-h4">￥<%=goods.price %></h5>*
+                            <h5 class="num-h4"><%=num %></h5> =
+                            <h4 class="totle-h4">￥<%=goods.price*num %></h4>
+                            <% all_total = goods.price*num %>
+                        </td>
+                    </tr>
+                <% }else if(type == 1) { %>
+                <!-- 从购物车而来 -->
+                <% } %>
+                </tbody>
+        </table>
+        </div>
+        <div>
+            <button type="button" class="btn btn-success pull-right" id="pay_btn">结算</button>
+            <h4 class="pull-right all-total">￥<%=all_total %></h4>
         </div>
     </div>
-
-    <div class="container goods-introduce-container">
-        <div class="row">
-            <ul class="nav nav-tabs">
-                <li role="presentation" class="active"><a>店铺详情</a></li>
-            </ul>
-        </div>
-        <div class="row">
-            <div class="store-img-div col-md-3">
-                <img src="<%= goods.store_img %>">
-            </div>
-            <div class="col-md-9 store-info">
-                <h4>店铺:<%= goods.name %></h4>
-                <h4>
-                    掌柜:<%= goods.username %>
-                    <span class="glyphicon glyphicon-comment" id="tolk-icon" aria-hidden="true"></span>
-                </h4>
-                <h4>开张:<%= goods.store_date %></h4>
-            </div>
-        </div>    
-        
-        <div class="row goods-introduce-row-nav">
-            <ul class="nav nav-tabs">
-                <li role="presentation" class="active"><a>商品详情</a></li>
-            </ul>
-        </div>
-        <div class="row">
-            <p class="goods-introduce-p"><%= goods.introduce %></p>
-            <ul>
-            <% for(var i = 0; i < src.length; i++) { %>
-                <li class="goods-image-li"><img class="goods-image" src="<%= src[i] %>"></li>
-            <% } %>
-            </ul>
-        </div>
-    </div>
-
+    <script type="text/javascript" src="/javascripts/shopping.js"></script>
     <script type="text/javascript" src="/javascripts/libs/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/javascripts/goods.js"></script>
 </body>
-
 </html>

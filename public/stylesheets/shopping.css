@@ -1,0 +1,24 @@
+.shopping-container{
+    padding-top: 100px;
+}
+
+.introduce-p{
+    padding: 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+.price-h4,.num-h4,.totle-h4{
+    display: inline-block;
+}
+
+.totle-h4,.all-total{
+    color: red;
+}
+
+.all-total{
+    margin: 10px;
+}

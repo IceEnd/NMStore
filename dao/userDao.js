@@ -5,6 +5,8 @@ var mysql = require('mysql');
 var $conf = require('../database/mysqlDB.js');
 var crypto = require('crypto');
 var pool = mysql.createPool($conf.mysql);
+var Q = require('q');
+
 
 //密码加密
 function hashPwd(str) {
@@ -39,30 +41,21 @@ function add(req, res, next) {
 
 /*会员登录 */
 function memberLogin(req, res, next) {
+    var defer = Q.defer();
     pool.getConnection(function(err, connection) {
 
         connection.query('SELECT * FROM users WHERE username ="' + req.body.username + '" and pwd = "' + hashPwd(req.body.pwd) + '" and user_type = "' + req.body.user_type + '"', function(err, result) {
             if (!err) {
-                console.log(result.length);
-                if (result.length == 0) {
-                    //用户名或密码错误
-                    res.send({ type: 1});
-                }
-                else if (result.length == 1) {
-                    //登录成功
-                    res.send({ type: 0,user_id:result[0].user_id});
-                }
-                else {
-                    res.send({ type: 2});
-                }
+                defer.resolve(result);
             }
             else {
                 //网络连接错误
-                res.send({ type: 2 });
+                defer.reject(err);
             }
         });
         connection.release();
     });
+    return defer.promise;
 };
 
 function storeLogin(req, res, next) {
