@@ -65,6 +65,12 @@
     </nav>
     
     <div class="container" style="padding-top:100px;">
+        <div>
+            <h4 class="pull-left">总价</h4> 
+            <h4 class="pull-right" id="total_price">0</h4>
+            <h4 class="pull-right">￥</h4>
+            <div class="clear"></div>
+        </div>
         <div style="margin:10px 0;text-align:right;">
             <a role="button" class="btn btn-success" id="del-btn">删除</a>
             <a role="button" class="btn btn-default" id="pay-btn">结算</a>
@@ -83,7 +89,7 @@
                         <th class="col-lg-2 col-md-2">购买数量</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="car_list">
                     <% for(var i = 0; i < goods.length; i++) {%>
                     <% if(goods[i].src != null){
                         var src = goods[i].src;
@@ -93,7 +99,7 @@
                     %>
                     <tr>
                         <td class="col-lg-1 col-md-1">
-                            <input type="checkbox" value="<%=goods[i].goods_id %>" name="checkbox" data-car="<%=goods[i].car_id %>">
+                            <input class="checkInput" type="checkbox" value="<%=goods[i].goods_id %>" name="checkbox" data-car="<%=goods[i].car_id %>">
                         </td>
                         <td class="col-lg-1 col-md-1">
                             <a href="/goods?gid=<%=goods[i].goods_id %>">
@@ -116,7 +122,7 @@
                         <td class="col-lg-2 col-md-2">
                             <h5 style="display:inline-block;"><%=goods[i].price %></h5>*
                             <h5 style="display:inline-block;"><%=goods[i].goods_num %> </h5>=
-                            <h5 style="display:inline-block;color:red;">￥<%=goods[i].price*goods[i].goods_num %></h5>
+                            <h5 class="item-price" style="display:inline-block;color:red;">￥<%=goods[i].price*goods[i].goods_num %></h5>
                         </td>
                     </tr>
                     <% } %>

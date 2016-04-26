@@ -66,7 +66,26 @@ function mkdirUpload(str) {
     return defer.promise;
 }
 
+//数组去重
+function uniqueArr(arr){
+    var result = [], isRepeated;
+    for (var i = 0, len = arr.length; i < len; i++) {
+        isRepeated = false;
+        for (var j = 0, len = result.length; j < len; j++) {
+            if (arr[i] == result[j]){
+                isRepeated = true;
+                break;
+            }
+        }
+        if (!isRepeated){
+            result.push(arr[i]);
+        }
+    }
+    return result;
+}
+
 module.exports = {
-    uploadImg: uploadImg,
-    mkdirUpload: mkdirUpload,
+    uploadImg: uploadImg,           //上传图片
+    mkdirUpload: mkdirUpload,       //创建目录
+    uniqueArr:uniqueArr,            //数组去重
 }

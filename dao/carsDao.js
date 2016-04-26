@@ -42,7 +42,6 @@ function addCars(car, user_id, date) {
             str += '(' + user_id + "," + c + ',' + car[c] + ',"' + date + '"),'
         }
         str = str.substring(0, str.length - 1);
-        console.log(str);
         pool.getConnection(function (err, connection) {
             connection.query(str, function (err, result) {
                 if (!err) {
@@ -120,9 +119,33 @@ function delItems(items) {
     return defer.promise;
 }
 
+/* 通过ID找到项目 */
+function getItemsById(items) {
+    var defer = Q.defer();
+    var str = 'select a.car_id ,a.user_id,a.goods_num ,b.goods_id,b.store_id,b.stock,b.goods_state from cars as a left join  goods as b on (a.goods_id = b.goods_id) where a.car_id in (';
+    for(i in items){
+        str += items[i]+',';
+    }
+    str = str.substring(0,str.length-1);
+    str += ')';
+    pool.getConnection(function (err,connection) {
+        connection.query(str,function (err,result) {
+           if(!err){
+               defer.resolve(result);
+           }else{
+               console.log(err);
+               defer.reject(err);
+           }
+           connection.release();
+        });
+    });
+    return defer.promise;
+}
+
 module.exports = {
     getCarsByUserId: getCarsByUserId,
     updateCars: updateCars,
     addCars: addCars,
     delItems:delItems,
+    getItemsById:getItemsById,
 }

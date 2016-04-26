@@ -32,7 +32,7 @@ router.get('/', function (req, res, next) {
 /* 添加到购物车 */
 router.post('/addcar', function (req, res, next) {
     var fdate = new Date();
-    date = fdate.getFullYear()+'-'+(fdate.getMonth()+1)+'-'+fdate.getDate()+' '+fdate.getHours()+':'+fdate.getMinutes()+':'+fdate.getSeconds();
+    var date = fdate.getFullYear()+'-'+(fdate.getMonth()+1)+'-'+fdate.getDate()+' '+fdate.getHours()+':'+fdate.getMinutes()+':'+fdate.getSeconds();
     var car = JSON.parse(req.body.car);
     var updateCar = {};
     carsDao.getCarsByUserId(req.cookies.user_id)

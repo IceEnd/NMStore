@@ -220,7 +220,32 @@ function outOfSale(goods_id,manager) {
             else{
                 defer.reject(err);
             }
+            connection.release();
         });
+    });
+    return defer.promise;
+}
+
+/**
+ * 商品添加订单
+ */
+function addToOrder(items) {
+    var defer = Q.defer();
+    pool.getConnection(function (err,connection) {
+        for(var i = 0; i< items.length; i++){
+            (function(index) {
+                connection.query('select * from goods where goods_id = '+items[index].goods_id,function (err,result) {
+                    if(!err){
+                        console.log(result);
+                        console.log(index);
+                    }
+                    else{
+                        console.log(err);
+                        defer.reject(err);
+                    }
+                });
+            })(i);
+        }
     });
     return defer.promise;
 }
@@ -237,4 +262,5 @@ module.exports = {
     removeGoodsImg:removeGoodsImg,
     addGoodsStock:addGoodsStock,
     outOfSale:outOfSale,
+    addToOrder:addToOrder,
 }

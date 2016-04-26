@@ -60,24 +60,27 @@ create table goods_images(
 	goods_id BIGINT not null,
 	src varchar(200),
 	primary key (images_id),
-	foreign key(goods_id) references goods(goods_id)on   delete   cascade   on   update   cascade
+	foreign key(goods_id) references goods(goods_id) on   delete   cascade   on   update   cascade
 ) engine=innodb default CHARSET=utf8;
 
 //������
 use nmstore;
 create table orders(
 	order_id BIGINT not null  AUTO_INCREMENT,
-    goods varchar(50) not null,
+    user_id integer not null,
+    store_id integer not null,
+    goods_id bigint not null,
     amount float not null,
     orders_date date not null,
     manager varchar(50),
-    username varchar(50) not null,
     handle_date date,
     cancle_date date,
     complete_date date,
-    delivery_id int,
     orders_state int not null,
-    primary key(order_id)
+    primary key(order_id),
+    foreign key(user_id) references users(user_id) on   delete   cascade   on   update   cascade,
+    foreign key(store_id) references store(store_id) on   delete   cascade   on   update   cascade,
+    foreign key(goods_id) references goods(goods_id) on   delete   cascade   on   update   cascade
 ) engine=innodb default CHARSET=utf8;
 
 //���ݱ�
