@@ -234,10 +234,12 @@ function addToOrder(items) {
     pool.getConnection(function (err,connection) {
         for(var i = 0; i< items.length; i++){
             (function(index) {
-                connection.query('select * from goods where goods_id = '+items[index].goods_id,function (err,result) {
+                var str = 'update goods set sales_num = sales_num + '+items[index].goods_num +',stock=stock -'+items[index].goods_num+' where goods_id='+items[index].goods_id;
+                connection.query(str,function (err,result) {
                     if(!err){
-                        console.log(result);
-                        console.log(index);
+                        if(index == items.length-1){
+                            defer.resolve(true);
+                        }
                     }
                     else{
                         console.log(err);

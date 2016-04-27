@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <title>NMStore</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="author" content="Cononico" />
+    <meta name="application-name" content="NMStore" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8" />
+    <meta name="apple-mobile-app-capable" content="yes">
+    <meta name="apple-mobile-app-status-bar-style" content="black">
+
+    <link rel='stylesheet' href='/stylesheets/common.css' />
+    <link rel='stylesheet' href='/stylesheets/storema.css' />
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
+
+    <script src="/javascripts/libs/jquery-2.2.2.min.js"></script>
+    <script src="/javascripts/libs/jquery.cookie.js"></script>
+</head>
+<body data-store="<%= store.store_id %>" data-name='<%= store.name %>'>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand">
+                    <%= title %>
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">首页 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="/car">购物车</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            欢迎, <%= username %><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">个人中心</a></li>
+                            <li><a href="/storema">进入店铺</a></li>
+                            <li><a>处理订单</a></li>
+                            <li><a id="logout" href="javascript:">登出</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    
+    <div class="row store-nav-row container">
+        <ul class="nav nav-tabs">
+            <li role="presentation">
+                <a><%= store.name %></a>
+            </li>
+            <li role="presentation" class="active"><a href="/storeor">查看订单</a></li>
+            <li role="presentation"><a href="javascript:;">商店信息</a></li>
+        </ul>
+    </div>
+    <div class="container storema-goods-container" id="storema-goods-container">
+        <div class="row table-bar">
+             <button type="button" class="btn btn-primary navbar-right table-bar-btn store-nav-btn">待处理订单</button>
+             <button type="button" class="btn btn-primary navbar-right table-bar-btn store-nav-btn">全部订单</button>
+        </div>
+    </div>
+</body>
+</html>

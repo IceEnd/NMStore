@@ -65,7 +65,7 @@
             <li role="presentation" class="active">
                 <a><%= store.name %></a>
             </li>
-            <li role="presentation"><a href="javascript:;">查看订单</a></li>
+            <li role="presentation"><a href="/storeor">查看订单</a></li>
             <li role="presentation"><a href="javascript:;">商店信息</a></li>
         </ul>
     </div>
@@ -208,7 +208,7 @@
                      <li class="page-nav" data-page="<%= page_num %>"><a href="/storema?page=<%= page_num %>" class="store-goods-page"><%= page_num %></a><li>
                      <% } %>
                     <% } 
-                    if(page != page_num){
+                    if(page != page_num && page_num != 0){
                     %>
                     <li><a href="javascript:" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
                 <% }} %>

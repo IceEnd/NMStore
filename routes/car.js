@@ -91,11 +91,24 @@ router.post('/buy',function (req,res,next) {
     })
     .then(function (result) {
         if(result){
-            goodsDao.addToOrder(items);
+            return goodsDao.addToOrder(items);
         }
     })
-    .then(function () {
-        console.log(2333333);
+    .then(function (result) {
+        del_items = [];
+        for(i in items){
+            del_items.push(items[i].car_id);
+        }
+        return carsDao.delItems(del_items);
+    },function (error) {
+        type = 3;
+         throw new Error('now I know this happened');
+    })
+    .then(function (result) {
+        type = 0;
+    },function () {
+        type = 3;
+        throw new Error('now I know this happened');
     })
     .finally(function () {
         console.log('end');

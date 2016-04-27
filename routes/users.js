@@ -44,7 +44,7 @@ router.post('/mlogin', function (req, res, next) {
         })
         .then(function (result) {
             if (flag) {
-                if (result[0].car_id) {
+                if (result) {
                     for (c in car) {
                         console.log(c);
                         for (r in result) {

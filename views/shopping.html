@@ -80,8 +80,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                <% if(type == 0){ %>
-                <!-- 直接购买 -->
                 <% var src,all_total = 0;
                     if(goods['group_concat(b.src)'] != null){
                         src = goods['group_concat(b.src)'].split(',');
@@ -115,12 +113,11 @@
                             <% all_total = goods.price*num %>
                         </td>
                     </tr>
-                <% }%>
                 </tbody>
         </table>
         </div>
         <div>
-            <button type="button" class="btn btn-success pull-right" id="pay_btn">结算</button>
+            <button type="button" class="btn btn-success pull-right" id="pay_btn" data-goods="<%= goods.goods_id %>" data-num="<%=num %>">结算</button>
             <h4 class="pull-right all-total">￥<%=all_total %></h4>
         </div>
     </div>

@@ -11,7 +11,6 @@ function addOrder(items,date) {
         str += '('+items[i].user_id+','+items[i].store_id+','+items[i].goods_id+','+items[i].goods_num+',"'+date+'",0),'
     }
     str = str.substring(0, str.length - 1);
-    console.log(str);
     pool.getConnection(function (err, connection){
         connection.query(str,function (err,result) {
             if(!err){

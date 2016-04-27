@@ -37,7 +37,7 @@ router.post('/addcar', function (req, res, next) {
     var updateCar = {};
     carsDao.getCarsByUserId(req.cookies.user_id)
         .then(function (result) {
-            if (result[0].car_id) {
+            if (result) {
                 for (c in car) {
                     for (r in result) {
                         if (result[r].goods_id == parseInt(c)) {
@@ -55,7 +55,6 @@ router.post('/addcar', function (req, res, next) {
         })
         .then(function (ures) {
             //插入购物车
-            console.log(ures);
             if(ures){
                 return carsDao.addCars(car,req.cookies.user_id,date);
             }
