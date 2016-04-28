@@ -4,24 +4,26 @@ var Q = require('q');
 var fs = require('fs');
 var formidable = require("formidable");
 
-var storeDao = require('../dao/storeDao.js');
-var goodsDao = require('../dao/goodsDao.js');
-var util = require('../common/util.js');
+var storeDao = require('../dao/storeDao');
+var goodsDao = require('../dao/goodsDao');
+var ordersDao = require('../dao/ordersDao');
+var util = require('../common/util');
 
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
     if (req.cookies.user_type == '1' || req.cookies.user_type == '2') {
         var store_id, store, goods, amount, page;
         storeDao.getStoreId(req.cookies.user_id)
-            .then(function(s_id) {
+            .then(function (s_id) {
                 store_id = s_id;
                 return storeDao.getStore(store_id);
             })
-            .then(function(rstore) {
+            .then(function (rstore) {
                 store = rstore;
                 return goodsDao.getGoodsAmountByStoreId(store_id);
             })
-            .then(function(ramount) {
+            .then(function (ramount) {
                 amount = ramount;
+                console.log(ramount);
                 if (req.query.page) {
                     page = req.query.page;
                     return goodsDao.getGoodsByStoreId(store_id, (page - 1) * 20, 20);
@@ -32,10 +34,10 @@ router.get('/', function(req, res, next) {
                 }
 
             })
-            .then(function(rgoods) {
+            .then(function (rgoods) {
                 goods = rgoods;
             })
-            .finally(function() {
+            .finally(function () {
                 res.render('storema', { title: 'NMStore', username: req.cookies.username, user_type: req.cookies.user_type, store: store, goods: goods, amount: amount, page: page });
             });
     }
@@ -44,30 +46,30 @@ router.get('/', function(req, res, next) {
     }
 });
 
-router.post('/addgoods', function(req, res, next) {
+router.post('/addgoods', function (req, res, next) {
     var date = new Date();
     var uploadDir = "./public/upload/" + date.getFullYear();
     var img_url = [], goods_info;
     var success_flag = false;
     util.mkdirUpload(uploadDir)
-        .then(function(flag) {
+        .then(function (flag) {
             if (flag) {
-                uploadDir = "./public/upload/" + date.getFullYear() + "/" + (date.getMonth()+1);
+                uploadDir = "./public/upload/" + date.getFullYear() + "/" + (date.getMonth() + 1);
                 return util.mkdirUpload(uploadDir)
             }
         })
-        .then(function(flag) {
+        .then(function (flag) {
             if (flag) {
                 uploadDir = "./public/upload/" + date.getFullYear() + "/" + date.getMonth();
                 return util.uploadImg(req, res, next, date, uploadDir);
             }
         })
-        .then(function(goods) {
+        .then(function (goods) {
             goods_info = goods['goods'];
             img_url = goods['img_url'];
             return goodsDao.addGoods(goods_info, date, req.cookies.username, req.cookies.store_id);
         })
-        .then(function(goods_id) {
+        .then(function (goods_id) {
             goods_info.goodsId = goods_id;
             if (goods_info.imgLength > 0) {
                 return goodsDao.addGoodsImg(img_url, goods_id);
@@ -76,12 +78,12 @@ router.post('/addgoods', function(req, res, next) {
                 return true;
             }
         })
-        .then(function(type) {
+        .then(function (type) {
             if (type) {
                 success_flag = true;
             }
         })
-        .finally(function() {
+        .finally(function () {
             if (success_flag) {
                 console.log(img_url);
                 res.send({ 'type': 0, 'new_goods': goods_info, 'images': img_url });
@@ -97,55 +99,55 @@ router.post('/addgoods', function(req, res, next) {
 /**
  * 更新商品信息
  */
-router.post('/upgoods', function(req, res, next) {
+router.post('/upgoods', function (req, res, next) {
     var date = new Date();
     var uploadDir = "./public/upload/" + date.getFullYear();
     var img_url = [], goods_info;
     var success_flag = false;
 
     util.mkdirUpload(uploadDir)
-        .then(function(flag) {
+        .then(function (flag) {
             if (flag) {
                 uploadDir = "./public/upload/" + date.getFullYear() + "/" + date.getMonth();
                 return util.mkdirUpload(uploadDir);
             }
         })
-        .then(function(flag) {
+        .then(function (flag) {
             if (flag) {
                 uploadDir = "./public/upload/" + date.getFullYear() + "/" + date.getMonth();
                 return util.uploadImg(req, res, next, date, uploadDir);
             }
         })
-        .then(function(goods) {
+        .then(function (goods) {
             goods_info = goods['goods'];
             img_url = goods['img_url'];
-            return goodsDao.updateGoods(goods_info,date,req.cookies.username);
+            return goodsDao.updateGoods(goods_info, date, req.cookies.username);
         })
         .then(function (flag) {
-            if(goods_info.imgLength == 0){
+            if (goods_info.imgLength == 0) {
                 success_flag = true;
                 return true;
             }
-            else{
+            else {
                 return goodsDao.removeGoodsImg(goods_info.goodsId);
             }
         })
         .then(function (flag) {
-            if(flag){
-                return goodsDao.addGoodsImg(img_url,goods_info.goodsId);
+            if (flag) {
+                return goodsDao.addGoodsImg(img_url, goods_info.goodsId);
             }
         })
         .then(function (flag) {
-            if(flag){
+            if (flag) {
                 success_flag = true;
             }
         })
         .finally(function () {
-            if(success_flag){
-                res.send({'type':0,'images':img_url});
+            if (success_flag) {
+                res.send({ 'type': 0, 'images': img_url });
                 res.end();
             }
-            else{
+            else {
                 res.send({ 'type': 1 });
                 res.end();
             }
@@ -153,33 +155,130 @@ router.post('/upgoods', function(req, res, next) {
 });
 
 //添加库存
-router.post('/addstock', function(req, res, next){
-    goodsDao.addGoodsStock(req.body.goods_id,req.body.goods_stock,req.cookies.username)
-    .then(function (flag) {
-        if(flag){
-            res.send({'type':0});
-            res.end();
-        }
-        else{
-            res.send({'type':1});
-            res.end();
-        }
-    });
+router.post('/addstock', function (req, res, next) {
+    goodsDao.addGoodsStock(req.body.goods_id, req.body.goods_stock, req.cookies.username)
+        .then(function (flag) {
+            if (flag) {
+                res.send({ 'type': 0 });
+                res.end();
+            }
+            else {
+                res.send({ 'type': 1 });
+                res.end();
+            }
+        });
 });
 
 //商品下架
-router.post('/outsale', function(req, res, next){
-    goodsDao.outOfSale(req.body.goods_id,req.cookies.username)
-    .then(function (flag) {
-        if(flag){
-            res.send({'type':0});
-            res.end();
-        }
-        else{
-            res.send({"type":1});
-            res.send();
-        }
-    });
+router.post('/outsale', function (req, res, next) {
+    goodsDao.outOfSale(req.body.goods_id, req.cookies.username)
+        .then(function (flag) {
+            if (flag) {
+                res.send({ 'type': 0 });
+                res.end();
+            }
+            else {
+                res.send({ "type": 1 });
+                res.send();
+            }
+        });
+});
+
+
+//未完成订单
+router.get('/order', function (req, res, next) {
+    if (req.cookies.user_type == '1' || req.cookies.user_type == '2') {
+        var store, orders, amount, page, type = 0;
+        storeDao.getStore(req.cookies.store_id)
+            .then(function (result) {
+                store = result;
+                return ordersDao.getOrderAmount(req.cookies.store_id, true, true);
+            }, function (error) {
+                type = 1;
+                throw new Error('now I know this happened');
+            })
+            .then(function (result) {
+                amount = result;
+                console.log(result);
+                if (req.query.page) {
+                    page = req.query.page;
+                    return ordersDao.getStoreOrder(req.cookies.store_id, (page - 1) * 20, 20);
+                }
+                else {
+                    page = 1;
+                    return ordersDao.getStoreOrder(req.cookies.store_id, 0, 20);
+                }
+            }, function (err) {
+                type = 1;
+                throw new Error('now I know this happened');
+            })
+            .then(function (result) {
+                orders = result;
+            }, function (error) {
+                type = 1;
+                throw new Error('now I know this happened');
+            })
+            .finally(function () {
+                if (type == 0) {
+                    console.log(orders[0]);
+                    res.render('storeor', { title: 'NMStore', username: req.cookies.username, user_type: req.cookies.user_type, store: store, orders: orders, amount: amount, page: page });
+                }
+                else {
+                    res.render('error', { message: '404' });
+                }
+            });
+    }
+    else {
+        res.redirect('../users/login');
+    }
+});
+
+//全部订单
+router.get('/allorder', function (req, res, next) {
+    if (req.cookies.user_type == '1' || req.cookies.user_type == '2') {
+        var store, orders, amount, page, type = 0;
+        storeDao.getStore(req.cookies.store_id)
+            .then(function (result) {
+                store = result;
+                return ordersDao.getOrderAmount(req.cookies.store_id, true, false);
+            }, function (error) {
+                type = 1;
+                throw new Error('now I know this happened');
+            })
+            .then(function (result) {
+                amount = result;
+                console.log(result);
+                if (req.query.page) {
+                    page = req.query.page;
+                    return ordersDao.getStoreOrder(req.cookies.store_id, (page - 1) * 20, 20);
+                }
+                else {
+                    page = 1;
+                    return ordersDao.getStoreOrder(req.cookies.store_id, 0, 20);
+                }
+            }, function (err) {
+                type = 1;
+                throw new Error('now I know this happened');
+            })
+            .then(function (result) {
+                orders = result;
+            }, function (error) {
+                type = 1;
+                throw new Error('now I know this happened');
+            })
+            .finally(function () {
+                if (type == 0) {
+                    console.log(orders[0]);
+                    res.render('storeallor', { title: 'NMStore', username: req.cookies.username, user_type: req.cookies.user_type, store: store, orders: orders, amount: amount, page: page });
+                }
+                else {
+                    res.render('error', { message: '404' });
+                }
+            });
+    }
+    else {
+        res.redirect('../users/login');
+    }
 });
 
 module.exports = router;

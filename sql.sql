@@ -72,6 +72,8 @@ create table orders(
     goods_id bigint not null,
     amount float not null,
     orders_date date not null,
+    username varchar(50) not null,
+    address varchar(50) not null,
     manager varchar(50),
     handle_date date,
     cancle_date date,

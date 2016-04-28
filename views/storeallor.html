@@ -64,8 +64,8 @@
             <li role="presentation">
                 <a href="/storema"><%= store.name %></a>
             </li>
-            <li role="presentation" class="active"><a href="/storema/order">未完成订单</a></li>
-            <li role="presentation"><a href="/storema/allorder">全部订单</a></li>
+            <li role="presentation"><a href="/storema/order">未完成订单</a></li>
+            <li role="presentation" class="active"><a href="/storema/allorder">全部订单</a></li>
             <li role="presentation"><a href="javascript:;">商店信息</a></li>
         </ul>
     </div>
@@ -141,13 +141,13 @@
                     var page_num = Math.ceil(amount/20);
                     if(page != 1){
                 %>
-                <li><a href="/storema/order?page=<%= page-1 %>" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>  
+                <li><a href="/storema/allorder?page=<%= page-1 %>" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>  
                     <% } %>
                     <% if(page_num <= 9){ 
                             for(var page_i = 1; page_i <= page_num; page_i++){
                      %>
                      <li class="page-nav" data-page="<%= page_i %>">
-                         <a href="/storema/order?page=<%= page_i %>" class="store-goods-page"><%= page_i %></a>
+                         <a href="/storema/allorder?page=<%= page_i %>" class="store-goods-page"><%= page_i %></a>
                      <li> 
                     <% } %>
                     <% } 
@@ -156,47 +156,47 @@
                             for(var page_i = 1; page_i <= 6; page_i++){
                     %>
                     <li class="page-nav" data-page="<%= page_i %>">
-                         <a href="/storema/order?page=<%= page_i %>" class="store-goods-page"><%= page_i %></a>
+                         <a href="/storema/allorder?page=<%= page_i %>" class="store-goods-page"><%= page_i %></a>
                      <li>   
                             <% } %>
                      <li class="page-nav">
                          <a class="store-goods-page">...</a>
                      <li>
                      <li class="page-nav" data-page="<%= page_num-1 %>">
-                         <a href="/storema/order?page=<%= page_i %>" class="store-goods-page"><%= page_num-1 %></a>
+                         <a href="/storema/allorder?page=<%= page_i %>" class="store-goods-page"><%= page_num-1 %></a>
                      <li>
                      <li class="page-nav" data-page="<%= page_num %>">
-                         <a href="/storema/order?page=<%= page_i %>" class="store-goods-page"><%= page_num %></a>
+                         <a href="/storema/allorder?page=<%= page_i %>" class="store-goods-page"><%= page_num %></a>
                      <li>
                         <% } 
                         else if(page >5 && (page_num - page) <= 4){
                         %>
                      <li class="page-nav" data-page="1">
-                         <a href="/storema/order?page=1" class="store-goods-page">1</a>
+                         <a href="/storema/allorder?page=1" class="store-goods-page">1</a>
                      <li> 
                          <li class="page-nav" data-page="2">
-                         <a href="/storema/order?page=2" class="store-goods-page">2</a>
+                         <a href="/storema/allorder?page=2" class="store-goods-page">2</a>
                      <li> 
                      <li class="page-nav">
                          <a class="store-goods-page">...</a>
                      <li> 
                      <%     for(var page_i = page_num-5; page_i <= page_num; page_i++){ %>
                      <li class="page-nav" data-page="<%= page_i %>">
-                         <a href="/storema/order?page=<%= page_i %>" class="store-goods-page"><%= page_i %></a>
+                         <a href="/storema/allorder?page=<%= page_i %>" class="store-goods-page"><%= page_i %></a>
                      <li>
                             <% } %>
                         <% } 
                      else if(page >5 && (page_num - page)>4){
                         %>
-                     <li class="page-nav" data-page="1"><a href="/storema/order?page=1" class="store-goods-page">1</a><li>
-                     <li class="page-nav" data-page="2"><a href="/storema/order?page=2" class="store-goods-page">2</a><li>
+                     <li class="page-nav" data-page="1"><a href="/storema/allorder?page=1" class="store-goods-page">1</a><li>
+                     <li class="page-nav" data-page="2"><a href="/storema/allorder?page=2" class="store-goods-page">2</a><li>
                      <li class="page-nav"><a class="store-goods-page">...</a><li>
-                     <li class="page-nav" data-page="<%= page-1 %>"><a href="/storema/order?page=<%= page-1 %>" class="store-goods-page"><%= page-1 %></a><li>
-                     <li class="page-nav" data-page="<%= page %>"><a href="/storema/order?page=<%= page %>" class="store-goods-page"><%= page %></a><li>
-                     <li class="page-nav" data-page="<%= parseInt(page)+1 %>"><a href="/storema/order?page=<%= parseInt(page)+1 %>" class="store-goods-page"><%= parseInt(page)+1 %></a><li>
+                     <li class="page-nav" data-page="<%= page-1 %>"><a href="/storema/allorder?page=<%= page-1 %>" class="store-goods-page"><%= page-1 %></a><li>
+                     <li class="page-nav" data-page="<%= page %>"><a href="/storema/allorder?page=<%= page %>" class="store-goods-page"><%= page %></a><li>
+                     <li class="page-nav" data-page="<%= parseInt(page)+1 %>"><a href="/storema/allorder?page=<%= parseInt(page)+1 %>" class="store-goods-page"><%= parseInt(page)+1 %></a><li>
                      <li class="page-nav"><a class="store-goods-page">...</a><li>
-                     <li class="page-nav" data-page="<%= page_num-1 %>"><a href="/storema/order?page=<%= page_num-1 %>" class="store-goods-page"><%= page_num-1 %></a><li>
-                     <li class="page-nav" data-page="<%= page_num %>"><a href="/storema/order?page=<%= page_num %>" class="store-goods-page"><%= page_num %></a><li>
+                     <li class="page-nav" data-page="<%= page_num-1 %>"><a href="/storema/allorder?page=<%= page_num-1 %>" class="store-goods-page"><%= page_num-1 %></a><li>
+                     <li class="page-nav" data-page="<%= page_num %>"><a href="/storema/allorder?page=<%= page_num %>" class="store-goods-page"><%= page_num %></a><li>
                      <% } %>
                     <% } 
                     if(page != page_num && page_num != 0){

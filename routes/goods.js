@@ -56,7 +56,7 @@ router.post('/addcar', function (req, res, next) {
         .then(function (ures) {
             //插入购物车
             if(ures){
-                return carsDao.addCars(car,req.cookies.user_id,date);
+                return carsDao.addCars(car,req.cookies.user_id,date,req.cookies.username);
             }
             else{
                 return false;

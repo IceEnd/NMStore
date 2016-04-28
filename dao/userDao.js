@@ -105,8 +105,27 @@ function storeLogin(req, res, next) {
     });
 };
 
+//获取用户信息
+function getUserById(user_id) {
+    var defer = Q.defer();
+    pool.getConnection(function (err,connection) {
+        connection.query('select * from users where user_id='+user_id,function (err,result) {
+            if(!err){
+                defer.resolve(result);
+            }
+            else{
+                console.log(err);
+                defer.reject(err);
+            }
+            connection.release();
+        })
+    })
+    return defer.promise;
+}
+
 module.exports = {
     add: add,
     memberLogin: memberLogin,
     storeLogin: storeLogin,
+    getUserById:getUserById,
 };
