@@ -76,7 +76,7 @@ create table orders(
     address varchar(50) not null,
     manager varchar(50),
     handle_date date,
-    cancle_date date,
+    cancel_date date,
     complete_date date,
     orders_state int not null,
     primary key(order_id),

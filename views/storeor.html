@@ -77,9 +77,10 @@
                      <th class="col-sm-1">用户</th>
                      <th class="col-sm-1">商品</th>
                      <th class="col-sm-1">数量</th>
+                     <th class="col-sm-2">收货地址</th>
                      <th class="col-sm-1">处理人</th>
-                     <th class="col-sm-2">提交</th>
-                     <th class="col-sm-2">处理</th>
+                     <th class="col-sm-1">提交</th>
+                     <th class="col-sm-1">处理</th>
                      <th class="col-sm-1">状态</th>
                      <th class="col-sm-2">操作</th>
                 </thead>
@@ -93,9 +94,10 @@
                                 <span><%= orders[i].goods_name %></span>
                             </td>
                             <td class="col-sm-1">*<%= orders[i].amount %></td> 
-                            <td class="col-sm-1"><%= orders[i].manager %></td>
-                            <td class="col-sm-2"><%= orders[i].orders_date %></td>
-                            <td class="col-sm-2">
+                            <td class="col-sm-2"><%= orders[i].address %></td>
+                            <td class="col-sm-1 order_manager"><%= orders[i].manager %></td>
+                            <td class="col-sm-1"><%= orders[i].orders_date %></td>
+                            <td class="col-sm-1">
                                 <% if(orders[i].complete_date){ %>
                                 <%= orders[i].complete_date %>
                                 <% }else if(orders[i].cancle_date){ %>
@@ -104,7 +106,7 @@
                                 <%=orders[i].handle_date %>
                                 <% } %>
                             </td>
-                            <td class="col-sm-1">
+                            <td class="col-sm-1 order_state">
                                 <% if(orders[i].orders_state == 0){ %><span>未处理</span>
                                 <% }else if(orders[i].orders_state == 1){ %><span>已接单</span>
                                 <% }else if(orders[i].orders_state == 2){ %><span>已发货</span>
@@ -113,14 +115,14 @@
                                 <% }else if(orders[i].orders_state == 5){ %><span>交易完成</span>
                                 <% } %>
                             </td>
-                            <td class="col-sm-1">
+                            <td class="col-sm-2 option_td">
                                 <% if(orders[i].orders_state == 0){ %>
-                                <a class="take_a">接单</a>
-                                <a class="cancel_a">取消交易</a>
+                                <a class="take_a btn btn-default" data-order="<%=orders[i].order_id %>">接单</a>
+                                <a class="cancel_a btn btn-default" data-order="<%=orders[i].order_id %>">取消交易</a>
                                 <% } %>
                                 <% if(orders[i].orders_state == 1){ %>
-                                <a class="send_a">发货</a>
-                                <a class="cancel_a">取消交易</a>
+                                <a class="send_a btn btn-default" data-order="<%=orders[i].order_id %>">发货</a>
+                                <a class="cancel_a btn btn-default" data-order="<%=orders[i].order_id %>">取消交易</a>
                                 <% } %>
                             </td>
                         </tr>

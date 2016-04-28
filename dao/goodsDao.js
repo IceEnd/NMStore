@@ -234,20 +234,62 @@ function addToOrder(items) {
     pool.getConnection(function (err,connection) {
         for(var i = 0; i< items.length; i++){
             (function(index) {
-                var str = 'update goods set sales_num = sales_num + '+items[index].goods_num +',stock=stock -'+items[index].goods_num+' where goods_id='+items[index].goods_id;
+                var str = 'update goods set stock=stock -'+items[index].goods_num+' where goods_id='+items[index].goods_id;
                 connection.query(str,function (err,result) {
                     if(!err){
                         if(index == items.length-1){
                             defer.resolve(true);
+                            connection.release();
                         }
                     }
                     else{
                         console.log(err);
                         defer.reject(err);
+                        connection.release();
                     }
                 });
             })(i);
         }
+    });
+    return defer.promise;
+}
+
+/**
+ * 订单取消,回复商品库存
+ */
+function addOrderToGoods(order) {
+    var defer = Q.defer();
+    pool.getConnection(function (err,connection) {
+        connection.query('update goods set stock=stock+'+order.amount+' where goods_id = '+order.goods_id,function (err,result) {
+            if(!err){
+                defer.resolve(true);
+            }
+            else{
+                console.log(err);
+                defer.reject(err);
+            }
+            connection.release();      
+        });
+    });
+    return defer.promise;
+}
+
+/**
+ * 确认订单，增加销量
+ */
+function queryOrderToGoods(order) {
+    var defer = Q.defer();
+    pool.getConnection(function (err,connection) {
+        connection.query('update goods set sales_num=sales_num+'+order.amount+' where goods_id = '+order.goods_id,function (err,result) {
+            if(!err){
+                defer.resolve(true);
+            }
+            else{
+                console.log(err);
+                defer.reject(err);
+            }
+            connection.release();      
+        });
     });
     return defer.promise;
 }
@@ -265,4 +307,6 @@ module.exports = {
     addGoodsStock:addGoodsStock,
     outOfSale:outOfSale,
     addToOrder:addToOrder,
+    addOrderToGoods:addOrderToGoods,
+    queryOrderToGoods:queryOrderToGoods,
 }

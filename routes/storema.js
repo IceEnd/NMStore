@@ -23,7 +23,6 @@ router.get('/', function (req, res, next) {
             })
             .then(function (ramount) {
                 amount = ramount;
-                console.log(ramount);
                 if (req.query.page) {
                     page = req.query.page;
                     return goodsDao.getGoodsByStoreId(store_id, (page - 1) * 20, 20);
@@ -85,7 +84,6 @@ router.post('/addgoods', function (req, res, next) {
         })
         .finally(function () {
             if (success_flag) {
-                console.log(img_url);
                 res.send({ 'type': 0, 'new_goods': goods_info, 'images': img_url });
                 res.end();
             }
@@ -199,7 +197,6 @@ router.get('/order', function (req, res, next) {
             })
             .then(function (result) {
                 amount = result;
-                console.log(result);
                 if (req.query.page) {
                     page = req.query.page;
                     return ordersDao.getStoreOrder(req.cookies.store_id, (page - 1) * 20, 20);
@@ -220,7 +217,6 @@ router.get('/order', function (req, res, next) {
             })
             .finally(function () {
                 if (type == 0) {
-                    console.log(orders[0]);
                     res.render('storeor', { title: 'NMStore', username: req.cookies.username, user_type: req.cookies.user_type, store: store, orders: orders, amount: amount, page: page });
                 }
                 else {
@@ -247,14 +243,13 @@ router.get('/allorder', function (req, res, next) {
             })
             .then(function (result) {
                 amount = result;
-                console.log(result);
                 if (req.query.page) {
                     page = req.query.page;
-                    return ordersDao.getStoreOrder(req.cookies.store_id, (page - 1) * 20, 20);
+                    return ordersDao.getStoreAllOrder(req.cookies.store_id, (page - 1) * 20, 20);
                 }
                 else {
                     page = 1;
-                    return ordersDao.getStoreOrder(req.cookies.store_id, 0, 20);
+                    return ordersDao.getStoreAllOrder(req.cookies.store_id, 0, 20);
                 }
             }, function (err) {
                 type = 1;
@@ -268,7 +263,6 @@ router.get('/allorder', function (req, res, next) {
             })
             .finally(function () {
                 if (type == 0) {
-                    console.log(orders[0]);
                     res.render('storeallor', { title: 'NMStore', username: req.cookies.username, user_type: req.cookies.user_type, store: store, orders: orders, amount: amount, page: page });
                 }
                 else {
@@ -279,6 +273,111 @@ router.get('/allorder', function (req, res, next) {
     else {
         res.redirect('../users/login');
     }
+});
+
+//卖家取消
+router.post('/corder', function (req, res, next) {
+    var type = 0;
+    var fdate = new Date();
+    var date = fdate.getFullYear() + '-' + (fdate.getMonth() + 1) + '-' + fdate.getDate() + ' ' + fdate.getHours() + ':' + fdate.getMinutes() + ':' + fdate.getSeconds();
+    var order;
+    ordersDao.getOrderById(req.body.order_id)
+        .then(function (result) {
+            order = result[0];
+            if (result[0].orders_state == 3) {
+                type = 1;
+                throw new Error('now I know this happened');
+            }
+            else {
+                return ordersDao.cancelOrder(false, req.body.order_id, date, req.cookies.username);
+            }
+        }, function (error) {
+            type = 2;
+            throw new Error('now I know this happened');
+        })
+        .then(function (result) {
+            return goodsDao.addOrderToGoods(order);
+        }, function (error) {
+            type = 2;
+            throw new Error('now I know this happened');
+        })
+        .then(function (result) {
+            type = 0;
+        },function (error) {
+            type = 2;
+            throw new Error('now I know this happened');
+        })
+        .finally(function () {
+            res.send({ "type": type });
+            res.end();
+        });
+});
+
+//卖家接单
+router.post('/torder', function (req, res, next) {
+    var type = 0;
+    var fdate = new Date();
+    var date = fdate.getFullYear() + '-' + (fdate.getMonth() + 1) + '-' + fdate.getDate() + ' ' + fdate.getHours() + ':' + fdate.getMinutes() + ':' + fdate.getSeconds();
+    ordersDao.getOrderById(req.body.order_id)
+        .then(function (result) {
+            if (result[0].orders_state == 3) {
+                type = 1;
+                throw new Error('now I know this happened');
+            }
+            else {
+                return ordersDao.takeOrder(req.body.order_id, date, req.cookies.username);
+            }
+        }, function (error) {
+            type = 2;
+            throw new Error('now I know this happened');
+        })
+        .then(function (result) {         
+            type = 0;
+        }, function (error) {
+            type = 2;
+            throw new Error('now I know this happened');
+        })
+        .finally(function () {
+            res.send({ "type": type });
+            res.end();
+        });
+});
+
+//卖家发货
+router.post('/sorder', function (req, res, next) {
+    var type = 0;
+    var fdate = new Date();
+    var date = fdate.getFullYear() + '-' + (fdate.getMonth() + 1) + '-' + fdate.getDate() + ' ' + fdate.getHours() + ':' + fdate.getMinutes() + ':' + fdate.getSeconds();
+    ordersDao.getOrderById(req.body.order_id)
+        .then(function (result) {
+            console.log(result[0].orders_state);
+            if (result[0].orders_state == 3) {
+                type = 1;
+                return false;
+            }
+            else {
+                return ordersDao.sendOrder(req.body.order_id, date, req.cookies.username);
+            }
+        }, function (error) {
+            console.log(2);
+            type = 2;
+            throw new Error('now I know this happened');
+        })
+        .then(function (result) {    
+            if(result){
+                type = 0;
+            }
+            else{
+                type = 1;
+            }
+        }, function (error) {    
+            type = 2;
+            throw new Error('now I know this happened');
+        })
+        .finally(function () {
+            res.send({ "type": type });
+            res.end();
+        });
 });
 
 module.exports = router;

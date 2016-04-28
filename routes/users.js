@@ -86,21 +86,20 @@ router.get('/', function (req, res, next) {
         userDao.getUserById(req.cookies.user_id)
             .then(function (result) {
                 user = result;
-                return ordersDao.getOrderAmount(req.cookies.user_id, flag, true);
+                return ordersDao.getOrderAmount(req.cookies.user_id, false, true);
             }, function (error) {
                 type = 1;
                 throw new Error('now I know this happened');
             })
             .then(function (result) {
                 amount = result;
-                console.log(result);
                 if (req.query.page) {
                     page = req.query.page;
-                    return ordersDao.getUserOrder(req.cookies.store_id, (page - 1) * 20, 20);
+                    return ordersDao.getUserOrder(req.cookies.user_id, (page - 1) * 20, 20);
                 }
                 else {
                     page = 1;
-                    return ordersDao.getUserOrder(req.cookies.store_id, 0, 20);
+                    return ordersDao.getUserOrder(req.cookies.user_id, 0, 20);
                 }
             }, function (err) {
                 type = 1;
@@ -114,8 +113,7 @@ router.get('/', function (req, res, next) {
             })
             .finally(function () {
                 if (type == 0) {
-                    console.log(orders[0]);
-                    res.render('useror', { title: 'NMStore', username: req.cookies.username, user_type: req.cookies.user_type, store: store, orders: orders, amount: amount, page: page });
+                    res.render('useror', { title: 'NMStore', username: req.cookies.username, user_type: req.cookies.user_type, user: user, orders: orders, amount: amount, page: page });
                 }
                 else {
                     res.render('error', { message: '404' });
@@ -128,10 +126,10 @@ router.get('/', function (req, res, next) {
 });
 
 //全部订单
-router.get('/allorder',function (req,res,next) {
-    if (req.cookies.user_id){
+router.get('/allorder', function (req, res, next) {
+    if (req.cookies.user_id) {
         var store, orders, amount, page, type = 0;
-         userDao.getUserById(req.cookies.user_id)
+        userDao.getUserById(req.cookies.user_id)
             .then(function (result) {
                 user = result;
                 return ordersDao.getOrderAmount(req.cookies.user_id, false, false);
@@ -144,11 +142,11 @@ router.get('/allorder',function (req,res,next) {
                 console.log(result);
                 if (req.query.page) {
                     page = req.query.page;
-                    return ordersDao.getUserOrder(req.cookies.store_id, (page - 1) * 20, 20);
+                    return ordersDao.getUserAllOrder(req.cookies.user_id, (page - 1) * 20, 20);
                 }
                 else {
                     page = 1;
-                    return ordersDao.getUserOrder(req.cookies.store_id, 0, 20);
+                    return ordersDao.getUserAllOrder(req.cookies.user_id, 0, 20);
                 }
             }, function (err) {
                 type = 1;
@@ -162,17 +160,86 @@ router.get('/allorder',function (req,res,next) {
             })
             .finally(function () {
                 if (type == 0) {
-                    console.log(orders[0]);
-                    res.render('userallor', { title: 'NMStore', username: req.cookies.username, user_type: req.cookies.user_type, store: store, orders: orders, amount: amount, page: page });
+                    res.render('userallor', { title: 'NMStore', username: req.cookies.username, user_type: req.cookies.user_type, user: user, orders: orders, amount: amount, page: page });
                 }
                 else {
                     res.render('error', { message: '404' });
                 }
             });
     }
-    else{
+    else {
         res.redirect('../users/login');
     }
+});
+
+//用户取消交易
+router.post('/corder', function (req, res, next) {
+    var type = 0;
+    var fdate = new Date();
+    var date = fdate.getFullYear() + '-' + (fdate.getMonth() + 1) + '-' + fdate.getDate() + ' ' + fdate.getHours() + ':' + fdate.getMinutes() + ':' + fdate.getSeconds();
+    var order;
+    ordersDao.getOrderById(req.body.order_id)
+        .then(function (result) {
+            order = result[0];
+            if (result[0].orders_state == 0 || result[0].orders_state == 1) {
+                return ordersDao.cancelOrder(true, req.body.order_id, date);
+            }
+            else {
+                type = 1;
+                throw new Error('now I know this happened');
+            }
+        }, function (error) {
+            type = 2;
+            throw new Error('now I know this happened');
+        })
+        .then(function (result) {
+            return goodsDao.addOrderToGoods(order);
+        }, function (error) {
+            type = 2;
+            throw new Error('now I know this happened');
+        })
+        .then(function (result) {
+            type = 0;
+        }, function (error) {
+            type = 2;
+            throw new Error('now I know this happened');
+        })
+        .finally(function () {
+            res.send({ "type": type });
+            res.end();
+        });
+});
+
+//用户确认交易
+router.post('/qorder', function (req, res, next) {
+    var type = 0;
+    var fdate = new Date();
+    var date = fdate.getFullYear() + '-' + (fdate.getMonth() + 1) + '-' + fdate.getDate() + ' ' + fdate.getHours() + ':' + fdate.getMinutes() + ':' + fdate.getSeconds();
+    var order;
+    ordersDao.getOrderById(req.body.order_id)
+        .then(function (result){
+            order = result[0];
+            return ordersDao.queryOrder(req.body.order_id,date);
+        },function (error) {
+            type = 2;
+            throw new Error('now I know this happened');
+        })
+        .then(function (result) {
+            return goodsDao.queryOrderToGoods(order);
+        },function (error) {
+            type = 2;
+            throw new Error('now I know this happened');
+        })
+        .then(function (result) {
+            type = 0;
+        },function (error) {
+            type = 2;
+            throw new Error('now I know this happened');
+        })
+        .finally(function () {
+            res.send({"type":type});
+            res.end();
+        });
 });
 
 module.exports = router;

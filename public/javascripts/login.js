@@ -55,7 +55,7 @@ $('.sigin-in-form').submit(function() {
                     $.cookie('user_id',data.user_id, { expires: 7 ,path: "/"});
                     $.cookie('username',username,{ expires: 7 ,path: "/"});
                     $.cookie('user_type',user_type,{ expires: 7 ,path: "/"});
-                    $.cookie('car',user_type,{ expires: -1 ,path: "/"});
+                    $.removeCookie('car',{ path: '/' });
                     // alert('登陆成功');
                     window.location = '/';
                 }
