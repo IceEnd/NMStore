@@ -20,6 +20,8 @@
     "co":"latest",
     "q":"latest",
     "connect-multiparty":"latest",
-    "formidable":"latest"
+    "formidable":"latest",
+    "socket.io":"latest",
+    "express-ws":"latest"
   }
 }
