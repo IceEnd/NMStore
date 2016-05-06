@@ -1,7 +1,7 @@
 //清除cookie
 function clearCookie(array){
     for(i in array){
-        $.removeCookie(array[i]);
+        $.removeCookie(array[i],{ path: '/' });
     }
 }
 
@@ -99,4 +99,17 @@ $('#buy_btn').click(function () {
     var gid = $('#buy_btn').attr('data-goods');
     var num = $('#number').val();
     window.location.href = '/shopping?gid='+gid+'&num='+num;
+});
+
+//聊天按钮
+$('#talk-icon').bind('click',function () {
+    if($.cookie('username') && $.cookie('user_id') && $.cookie('user_type')){
+        var user_id = $.cookie('user_id');
+        var store_id = $(this).attr('data-store');
+        window.open("/chat/u"+user_id+'s'+store_id);
+    }
+    else{
+        alert('请先登录')
+        window.location.href="/users/login";
+    }
 });

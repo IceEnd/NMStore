@@ -16,9 +16,10 @@ var storema = require('./routes/storema');
 var goods = require('./routes/goods');
 var shopping = require('./routes/shopping');
 var car = require('./routes/car');
+var chat = require('./routes/chat');
 
 var app = express();
-var accessLogStream = fs.createWriteStream('./logs/access.log', {flags: 'a'})
+var accessLogStream = fs.createWriteStream('./logs/access.log', {flags: 'a'});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -46,6 +47,7 @@ app.use('/storema',storema);
 app.use('/goods',goods);
 app.use('/shopping',shopping);
 app.use('/car',car);
+app.use('/chat',chat);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

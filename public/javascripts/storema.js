@@ -7,7 +7,7 @@ var preview_div = document.getElementById('preview-div');
 //清除cookie
 function clearCookie(array) {
     for (i in array) {
-        $.removeCookie(array[i]);
+        $.removeCookie(array[i],{ path: '/' });
     }
 }
 

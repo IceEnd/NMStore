@@ -7,19 +7,20 @@
   },
   "dependencies": {
     "body-parser": "~1.13.2",
+    "co": "latest",
+    "connect": "2.30.2",
+    "connect-multiparty": "latest",
     "cookie-parser": "~1.3.5",
+    "crypto": "0.0.3",
     "debug": "~2.2.0",
     "ejs": "~2.3.3",
     "express": "~4.13.1",
+    "express-session": "1.12.1",
+    "formidable": "latest",
     "morgan": "~1.6.1",
+    "mysql": "latest",
+    "q": "latest",
     "serve-favicon": "~2.3.0",
-    "express-session":"1.12.1",
-    "connect": "2.30.2",
-    "mysql":"latest",
-    "crypto":"0.0.3",
-    "co":"latest",
-    "q":"latest",
-    "connect-multiparty":"latest",
-    "formidable":"latest"
+    "socket.io": "~1.4.6"
   }
 }

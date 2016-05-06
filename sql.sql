@@ -125,3 +125,19 @@ create table cars(
 	foreign key(user_id) references users(user_id),
     foreign key(goods_id) references goods(goods_id)
 )engine=innodb default CHARSET=utf8;
+
+
+//chat
+create table chat(
+    chat_id BIGINT not null AUTO_INCREMENT,
+    user_id integer not null,
+    store_id integer not null,
+    room_id varchar(100) not null,
+    username VARCHAR(20) NOT NULL,
+    status integer not null,
+    content text,
+    latest_time date not null,
+    primary key(chat_id),
+    foreign key(user_id) references users(user_id),
+    foreign key(store_id) references store(store_id)
+)engine=innodb default CHARSET=utf8;

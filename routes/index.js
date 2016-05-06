@@ -33,7 +33,7 @@ router.post('/more', function(req, res, next) {
     goodsDao.getGoodsAmount()
         .then(function(count) {
             amount = count;
-            return goodsDao.getGoods(page*40, 40)
+            return goodsDao.getGoods(page*40, 40);
         })
         .then(function(result) {
             goods = result;

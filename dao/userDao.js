@@ -70,13 +70,13 @@ function storeLogin(req, res, next) {
                     return;
                 }
                 else {
-                    //用户名为重复,users、store、store_users表插入
+                    //用户名未重复,users、store、store_users表插入
                     connection.query('INSERT INTO users(user_id,username,phone,pwd,address,user_type) VALUES(0,?,?,?,?,?)',
                         [req.body.username, req.body.phone, hashPwd(req.body.pwd), req.body.address, 1], function(err, result) {
                             if (!err) {
                                 user_id = result.insertId;
-                                connection.query('Insert INTO store(store_id,name,username,idcard,phone,address,store_date,store_state) values(0,?,?,?,?,?,?,?)',
-                                    [req.body.name, req.body.username, req.body.idcard, req.body.phone, req.body.address, resDate, 1], function(err, result) {
+                                connection.query('Insert INTO store(store_id,name,user_id,username,idcard,phone,address,store_date,store_state) values(0,?,?,?,?,?,?,?,?)',
+                                    [req.body.name, user_id,req.body.username, req.body.idcard, req.body.phone, req.body.address, resDate, 1], function(err, result) {
                                         if (!err) {
                                             store_id = result.insertId;
                                             connection.query('Insert Into store_users(su_id,store_id,user_id) values(0,?,?)',

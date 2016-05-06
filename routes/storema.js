@@ -7,6 +7,7 @@ var formidable = require("formidable");
 var storeDao = require('../dao/storeDao');
 var goodsDao = require('../dao/goodsDao');
 var ordersDao = require('../dao/ordersDao');
+var chatDao = require('../dao/chatDao');
 var util = require('../common/util');
 
 router.get('/', function (req, res, next) {
@@ -303,7 +304,7 @@ router.post('/corder', function (req, res, next) {
         })
         .then(function (result) {
             type = 0;
-        },function (error) {
+        }, function (error) {
             type = 2;
             throw new Error('now I know this happened');
         })
@@ -331,7 +332,7 @@ router.post('/torder', function (req, res, next) {
             type = 2;
             throw new Error('now I know this happened');
         })
-        .then(function (result) {         
+        .then(function (result) {
             type = 0;
         }, function (error) {
             type = 2;
@@ -363,14 +364,14 @@ router.post('/sorder', function (req, res, next) {
             type = 2;
             throw new Error('now I know this happened');
         })
-        .then(function (result) {    
-            if(result){
+        .then(function (result) {
+            if (result) {
                 type = 0;
             }
-            else{
+            else {
                 type = 1;
             }
-        }, function (error) {    
+        }, function (error) {
             type = 2;
             throw new Error('now I know this happened');
         })
@@ -379,5 +380,55 @@ router.post('/sorder', function (req, res, next) {
             res.end();
         });
 });
+
+//获取商店会话
+router.get('/chat', function (req, res, next) {
+    if (req.cookies.user_type == '1' || req.cookies.user_type == '2') {
+        var store, chat, amount = 0;
+        storeDao.getStore(req.cookies.store_id)
+            .then(function (result) {
+                store = result;
+                return chatDao.getStoreChatAmount(req.cookies.store_id);
+            })
+            .then(function (result) {
+                amount = result;
+                return chatDao.getChatOfStore(req.cookies.store_id, 0, 20);
+            })
+            .then(function (result) {
+                chat = result;
+                res.render('storechat', { title: 'NMStore', username: req.cookies.username, user_type: req.cookies.user_type, store: store, chat: chat, amount: amount });
+            });
+    }
+    else {
+        res.redirect('../users/login');
+    }
+});
+
+//获取更多会话
+router.post('/morechat', function (req, res, next) {
+    var chat;
+    var page = parseInt(req.body.page);
+    chatDao.getChatOfStore(req.cookies.store_id, page * 20, 20)
+        .then(function (result) {
+            chat = result;
+            res.send('storechat', { chat: chat });
+        });
+});
+
+//删除会话
+router.post('/delchat', function (req, res, next) {
+    chatDao.delChatById(req.body.chat_id)
+        .then(function (result) {
+            if (result) {
+                res.send({ flag: 0 })
+            }
+            else {
+                res.send({ flag: 1 });
+            }
+        }, function (error) {
+            res.send({ flag: 1 });
+        });
+});
+
 
 module.exports = router;

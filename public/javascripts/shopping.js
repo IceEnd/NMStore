@@ -1,7 +1,7 @@
 //清除cookie
 function clearCookie(array) {
     for (i in array) {
-        $.removeCookie(array[i]);
+        $.removeCookie(array[i],{ path: '/' });
     }
 }
 

@@ -17,9 +17,7 @@
 
     <script src="/javascripts/libs/jquery-2.2.2.min.js"></script>
     <script src="/javascripts/libs/jquery.cookie.js"></script>
-    <script>
-
-    </script>
+    <script src="/javascripts/libs/socket.io.js"></script>
 </head>
 
 <body>
@@ -134,7 +132,7 @@
                 <h4>店铺:<%= goods.name %></h4>
                 <h4>
                     掌柜:<%= goods.username %>
-                    <span class="glyphicon glyphicon-comment" id="tolk-icon" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-comment" id="talk-icon" aria-hidden="true" data-goods="<%= goods.goods_id %>" data-store="<%= goods.store_id %>"></span>
                 </h4>
                 <h4>开张:<%= goods.store_date %></h4>
             </div>
@@ -158,5 +156,4 @@
     <script type="text/javascript" src="/javascripts/libs/bootstrap.min.js"></script>
     <script type="text/javascript" src="/javascripts/goods.js"></script>
 </body>
-
 </html>
