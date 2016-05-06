@@ -351,7 +351,6 @@ router.post('/sorder', function (req, res, next) {
     var date = fdate.getFullYear() + '-' + (fdate.getMonth() + 1) + '-' + fdate.getDate() + ' ' + fdate.getHours() + ':' + fdate.getMinutes() + ':' + fdate.getSeconds();
     ordersDao.getOrderById(req.body.order_id)
         .then(function (result) {
-            console.log(result[0].orders_state);
             if (result[0].orders_state == 3) {
                 type = 1;
                 return false;
@@ -360,7 +359,6 @@ router.post('/sorder', function (req, res, next) {
                 return ordersDao.sendOrder(req.body.order_id, date, req.cookies.username);
             }
         }, function (error) {
-            console.log(2);
             type = 2;
             throw new Error('now I know this happened');
         })
@@ -384,19 +382,15 @@ router.post('/sorder', function (req, res, next) {
 //获取商店会话
 router.get('/chat', function (req, res, next) {
     if (req.cookies.user_type == '1' || req.cookies.user_type == '2') {
-        var store, chat, amount = 0;
+        var store, chat;
         storeDao.getStore(req.cookies.store_id)
             .then(function (result) {
                 store = result;
-                return chatDao.getStoreChatAmount(req.cookies.store_id);
-            })
-            .then(function (result) {
-                amount = result;
-                return chatDao.getChatOfStore(req.cookies.store_id, 0, 20);
+                return chatDao.getChatOfStore(req.cookies.store_id);
             })
             .then(function (result) {
                 chat = result;
-                res.render('storechat', { title: 'NMStore', username: req.cookies.username, user_type: req.cookies.user_type, store: store, chat: chat, amount: amount });
+                res.render('storechat', { title: 'NMStore', username: req.cookies.username, user_type: req.cookies.user_type, store: store, chat: chat});
             });
     }
     else {
@@ -405,15 +399,15 @@ router.get('/chat', function (req, res, next) {
 });
 
 //获取更多会话
-router.post('/morechat', function (req, res, next) {
-    var chat;
-    var page = parseInt(req.body.page);
-    chatDao.getChatOfStore(req.cookies.store_id, page * 20, 20)
-        .then(function (result) {
-            chat = result;
-            res.send('storechat', { chat: chat });
-        });
-});
+// router.post('/morechat', function (req, res, next) {
+//     var chat;
+//     var page = parseInt(req.body.page);
+//     chatDao.getChatOfStore(req.cookies.store_id, page * 20, 20)
+//         .then(function (result) {
+//             chat = result;
+//             res.send('storechat', { chat: chat });
+//         });
+// });
 
 //删除会话
 router.post('/delchat', function (req, res, next) {

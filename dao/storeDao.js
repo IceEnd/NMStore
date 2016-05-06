@@ -24,6 +24,7 @@ function getStoreId(user_id) {
 //根据store_id查询store
 function getStore(store_id) {
     var defer = Q.defer();
+    console.log(store_id);
     pool.getConnection(function(err, connection) {
         connection.query('SELECT * from store where store_id = ' + store_id, function(err, result) {
             if (!err) {             
