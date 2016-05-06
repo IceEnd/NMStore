@@ -6,6 +6,7 @@ var Q = require('q');
 /* 添加订单 */
 function addOrder(items, date) {
     var defer = Q.defer();
+    console.log(items);
     var str = 'INSERT INTO orders(user_id,store_id,goods_id,amount,orders_date,username,address,orders_state) VALUES ';
     for (i in items) {
         str += '(' + items[i].user_id + ',' + items[i].store_id + ',' + items[i].goods_id + ',' + items[i].goods_num + ',"' + date + '", "' + items[i].username + '","' + items[i].address + '",0),'

@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var io = require('socket.io');
 
 var userDao = require('../dao/userDao.js');
 var goodsDao = require('../dao/goodsDao.js');

@@ -45,6 +45,7 @@ router.post('/buy', function (req, res, next) {
                     items = result;
                     items[0].goods_num = req.body.num;
                     items[0].user_id = req.cookies.user_id;
+                    items[0].username = req.cookies.username;
                     return ordersDao.addOrder(items, date);
                 } else {
                     type = 2;

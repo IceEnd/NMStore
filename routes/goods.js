@@ -4,6 +4,8 @@ var router = express.Router();
 var goodsDao = require('../dao/goodsDao.js');
 var carsDao = require('../dao/carsDao.js');
 
+var io = require('socket.io')();
+
 /* 商品详情 */
 router.get('/', function (req, res, next) {
     var user = '';

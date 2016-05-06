@@ -48,6 +48,7 @@ app.use('/goods',goods);
 app.use('/shopping',shopping);
 app.use('/car',car);
 app.use('/chat',chat);
+app.use('/ws',car);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
