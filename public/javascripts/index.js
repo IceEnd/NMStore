@@ -13,10 +13,17 @@ $('#logout').click(function(){
 });
 
 $('#more-btn').click(function () {
+   var str = '';
+   if($('#more-btn').attr('data-type') == 0){
+       str = '/more'
+   }
+   else{
+       str = '/smore';
+   }
    page++; 
    $.ajax({
        type:'POST',
-       url:'/more',
+       url:str,
        dataType:'json',
        traditional: true,
        data:{
@@ -57,3 +64,14 @@ function addGoodsItem(goods) {
         }
     }
 }
+
+//搜索商品
+$('#search_btn').bind('click',function () {
+    if($('#search_input').val() == ''){
+        alert('请输入关键字');
+        return false;
+    } 
+    else{
+        $('#search_form').submit();
+    }
+});

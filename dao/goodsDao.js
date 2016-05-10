@@ -57,10 +57,51 @@ function getGoods(start, amount) {
     return defer.promise;
 }
 
+/**
+ * 搜索商品
+ */
+function searchGoods(key, start, amount) {
+    var defer = Q.defer();
+    pool.getConnection(function (err, connection) {
+        connection.query('select a.*,group_concat(b.images_id),group_concat(b.src),c.name from goods as a left join  goods_images as b  on (a.goods_id = b.goods_id) left join store as c on(a.store_id = c.store_id) where goods_state = 0 AND (goods_name like "%' +
+            key + '%" or goods_source like "%' + key + '%") group by a.goods_id order by a.goods_id desc limit ' + start + ',' + amount, function (err, result) {
+                if (!err) {
+                    defer.resolve(result);
+                }
+                else {
+                    console.log(err);
+                    defer.reject(err);
+                }
+                connection.release();
+            });
+    });
+    return defer.promise;
+}
+
 function getGoodsAmount() {
     var defer = Q.defer();
     pool.getConnection(function (err, connection) {
         connection.query('SELECT count(*) from goods where goods_state = 0', function (err, result) {
+            if (!err) {
+                defer.resolve(result[0]['count(*)']);
+            }
+            else {
+                console.log(err);
+                defer.reject(err);
+            }
+            connection.release();
+        });
+    });
+    return defer.promise;
+}
+
+/**
+ * 搜索商品的总数量
+ */
+function searchGoodsAmount(key) {
+    var defer = Q.defer();
+    pool.getConnection(function (err, connection) {
+        connection.query('select count(*) from goods where goods_state = 0 and (goods_name like "%' + key + '" or goods_source like "%' + key + '")', function (err, result) {
             if (!err) {
                 defer.resolve(result[0]['count(*)']);
             }
@@ -310,4 +351,6 @@ module.exports = {
     addToOrder: addToOrder,
     addOrderToGoods: addOrderToGoods,
     queryOrderToGoods: queryOrderToGoods,
+    searchGoodsAmount: searchGoodsAmount,
+    searchGoods:searchGoods,
 }
