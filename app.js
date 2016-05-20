@@ -20,6 +20,7 @@ var chat = require('./routes/chat');
 
 var app = express();
 var accessLogStream = fs.createWriteStream('./logs/access.log', {flags: 'a'});
+var errorLogfile = fs.createWriteStream('./logs/error.log', {flags: 'a'});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -74,6 +75,8 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
+  var meta = '[' + new Date() + '] ' + req.url + '\n';
+  errorLogfile.write(meta + err.stack + '\n');
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
