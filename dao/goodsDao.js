@@ -254,12 +254,13 @@ function addGoodsStock(goods_id, stock, manager) {
 function outOfSale(goods_id, manager) {
     var defer = Q.defer();
     pool.getConnection(function (err, connection) {
-        connection.query('update goods set goods_state = 1,manager =' + manager + ' where goods_id=' + goods_id,
+        connection.query('update goods set goods_state = 1,manager ="' + manager + '" where goods_id=' + goods_id,
             function (err, result) {
                 if (!err) {
                     defer.resolve(true);
                 }
                 else {
+                    console.log(err);
                     defer.reject(err);
                 }
                 connection.release();

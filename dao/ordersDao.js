@@ -165,7 +165,7 @@ function cancelOrder(type, id, date, manager) {
         str = 'update orders set orders_state = 3,cancel_date = "' + date + '" where order_id = ' + id;
     }
     else {
-        str = 'update orders set orders_state = 4,cancel_date = "' + date + '",manager =' + manager + ' where order_id = ' + id;
+        str = 'update orders set orders_state = 4,cancel_date = "' + date + '",manager ="' + manager + '" where order_id = ' + id;
     }
     console.log(str);
     pool.getConnection(function (err, connection) {
@@ -187,7 +187,7 @@ function takeOrder(id, date, manager) {
     var defer = Q.defer();
     console.log(date);
     pool.getConnection(function (err, connection) {
-        connection.query('update orders set orders_state = 1,handle_date = "' + date + '",manager=' + manager + ' where order_id = ' + id, function (err, result) {
+        connection.query('update orders set orders_state = 1,handle_date = "' + date + '",manager= "' + manager + '" where order_id = ' + id, function (err, result) {
             if (!err) {
                 console.log(result);
                 defer.resolve(result);
@@ -205,7 +205,7 @@ function takeOrder(id, date, manager) {
 function sendOrder(id, date, manager) {
     var defer = Q.defer();
     pool.getConnection(function (err, connection) {
-        connection.query('update orders set orders_state = 2,handle_date = "' + date + '",manager=' + manager + ' where order_id = ' + id, function (err, result) {
+        connection.query('update orders set orders_state = 2,handle_date = "' + date + '",manager="' + manager + '" where order_id = ' + id, function (err, result) {
             if (!err) {
                 defer.resolve(result);
             } else {
