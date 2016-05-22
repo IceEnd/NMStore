@@ -2,7 +2,7 @@ var username = $.cookie('username');
 var store_id = getQueryStore();
 var user_id = $.cookie('user_id');
 
-var socket = io('http://localhost:3000');
+var socket = io('http://localhost:8000');
 
 socket.on('connect', function () {
 
