@@ -7,7 +7,8 @@ var socket = io('http://localhost:8000');
 socket.on('connect', function () {
 
     $('#messages').append('<li class="log">请等待</li>');
-
+    scrollToBottom();
+    
     socket.emit('join', {
         username: username,
         store_id: store_id,
@@ -25,11 +26,13 @@ socket.on('connect', function () {
 
     socket.on('disconnect', function () {
         $('#messages').append('<li class="log">Disconnected</li>');
+        scrollToBottom();
     });
 });
 
 socket.on('sys', function (data) {
     $('#messages').append('<li class="log">' + data + '</li>');
+    scrollToBottom();
 });
 
 //发送
@@ -56,6 +59,8 @@ $('#inputMessage').keypress(function (event) {
 function scrollToBottom() {
     $('#messages').scrollTop($('#messages')[0].scrollHeight);
 }
+
+scrollToBottom();
 
 function getQueryStore() {
     var str = window.location.href.match(/s\d+/g)[0];

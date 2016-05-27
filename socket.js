@@ -7,6 +7,7 @@ io.on('connection', function (socket) {
     var url = socket.request.headers.referer;
     var split_arr = url.split('/');
     var roomid = split_arr[split_arr.length - 1] || 'index';
+    var content = '';
 
     socket.on('join', function (data) {     
         chatDao.getChatByRoom(roomid)
@@ -19,13 +20,23 @@ io.on('connection', function (socket) {
                 }
             });
         socket.join(roomid);
-        socket.to(roomid).emit('sys', data.username + ' is Connected')
+        socket.to(roomid).emit('sys', data.username + ' is Connected');
     });
 
     socket.on('new message', function (data) {
         socket.to(roomid).emit('new message', {
             username: data.username,
             message: data.message
+        });
+        chatDao.getSaveChat(roomid)
+        .then(function (result) {
+            if(result[0].content){
+                content = result[0].content + ';' + data.username +':'+data.message;
+            }
+            else{
+                content = data.username + ':' + data.message;
+            }
+            return chatDao.saveChat(content,result[0].chat_id);
         });
     });
 });

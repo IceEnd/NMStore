@@ -22,7 +22,19 @@
     <ul class="pages">
         <li class="chat page">
             <div class="chatArea">
-                <ul id="messages" class="messages"></ul>
+                <ul id="messages" class="messages">
+                    <% for(var i = 0; i < content.length;i++){ %>
+                    <% var message = content[i].split(":"); %>
+                    <% if(message[0] == username){ %>
+                    <li style="text-align:right;">
+                        <a><%=message[0] %></a>:<%=message[1] %>
+                    </li>
+                    <% } else { %>
+                    <li style="text-align:left;">
+                        <a><%=message[0] %></a>:<%=message[1] %>
+                    </li>
+                    <% }} %>
+                </ul>
             </div>
             <input id="inputMessage" class="inputMessage" placeholder="Type here..." />
         </li>

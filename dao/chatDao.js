@@ -119,6 +119,68 @@ function delChatById(chat_id) {
     return defer.promise;
 }
 
+/**
+ * 保存聊天记录
+ */
+function saveChat(content,id) {
+    var defer = Q.defer();
+    
+    pool.getConnection(function (err,connection) {
+        connection.query('UPDATE chat set content = "'+content+'" where chat_id = "'+id+'"',function (err,result) {
+            if(!err){
+                defer.resolve(true);
+            }
+            else{
+                defer.reject(err);
+            }
+            connection.release();
+        });
+    });
+    return defer.promise;
+}
+
+/**
+ * 搜寻聊天记录ID
+ */
+function getSaveChat(roomid) {
+    var defer = Q.defer();
+    
+    pool.getConnection(function (err,connection) {
+        connection.query('SELECT * from chat where room_id = "'+roomid+'" AND status = 0',function (err,result) {
+            if(!err){
+                defer.resolve(result);
+            }
+            else{
+                console.log(err);
+                defer.reject(err);
+            }
+            connection.release();
+        });
+    });
+    return defer.promise;
+}
+
+/**
+ * 找到聊天记录
+ */
+function getChatContent(roomid) {
+    var defer = Q.defer();
+
+    pool.getConnection(function (err,connection){
+        connection.query('SELECT content from chat where room_id = "'+roomid+'" AND status = 0',function (err,result) {
+             if(!err){
+                defer.resolve(result[0]);
+            }
+            else{
+                console.log(err);
+                defer.reject(err);
+            }
+            connection.release();
+        });
+    });
+    return defer.promise;
+}
+
 module.exports = {
     getChatByRoom: getChatByRoom,
     createChat: createChat,
@@ -126,4 +188,7 @@ module.exports = {
     getChatOfStore: getChatOfStore,
     getStoreChatAmount: getStoreChatAmount,
     delChatById:delChatById,
+    saveChat:saveChat,
+    getSaveChat:getSaveChat,
+    getChatContent:getChatContent,
 }
