@@ -34,6 +34,9 @@
                         <a><%=message[0] %></a>:<%=message[1] %>
                     </li>
                     <% }} %>
+					<% if(content.length > 0) {%>
+					<li class="log">历史消息</li>
+					<% } %>
                 </ul>
             </div>
             <input id="inputMessage" class="inputMessage" placeholder="Type here..." />
