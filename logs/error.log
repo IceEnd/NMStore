@@ -1,0 +1,48 @@
+[Sat May 28 2016 00:18:52 GMT+0800 (中国标准时间)] /chat/u2s5
+Error: Can't set headers after they are sent.
+    at ServerResponse.OutgoingMessage.setHeader (_http_outgoing.js:346:11)
+    at ServerResponse.res.setHeader (E:\GitHub\NMStore\node_modules\connect\lib\patch.js:134:22)
+    at ServerResponse.header (E:\GitHub\NMStore\node_modules\express\lib\response.js:718:10)
+    at ServerResponse.contentType (E:\GitHub\NMStore\node_modules\express\lib\response.js:551:15)
+    at ServerResponse.send (E:\GitHub\NMStore\node_modules\express\lib\response.js:138:14)
+    at done (E:\GitHub\NMStore\node_modules\express\lib\response.js:957:10)
+    at View.exports.renderFile [as engine] (E:\GitHub\NMStore\node_modules\ejs\lib\ejs.js:355:10)
+    at View.render (E:\GitHub\NMStore\node_modules\express\lib\view.js:126:8)
+    at tryRender (E:\GitHub\NMStore\node_modules\express\lib\application.js:639:10)
+    at EventEmitter.render (E:\GitHub\NMStore\node_modules\express\lib\application.js:591:3)
+[Sat May 28 2016 00:19:03 GMT+0800 (中国标准时间)] /chat/u2s5
+Error: Can't set headers after they are sent.
+    at ServerResponse.OutgoingMessage.setHeader (_http_outgoing.js:346:11)
+    at ServerResponse.res.setHeader (E:\GitHub\NMStore\node_modules\connect\lib\patch.js:134:22)
+    at ServerResponse.header (E:\GitHub\NMStore\node_modules\express\lib\response.js:718:10)
+    at ServerResponse.contentType (E:\GitHub\NMStore\node_modules\express\lib\response.js:551:15)
+    at ServerResponse.send (E:\GitHub\NMStore\node_modules\express\lib\response.js:138:14)
+    at done (E:\GitHub\NMStore\node_modules\express\lib\response.js:957:10)
+    at View.exports.renderFile [as engine] (E:\GitHub\NMStore\node_modules\ejs\lib\ejs.js:355:10)
+    at View.render (E:\GitHub\NMStore\node_modules\express\lib\view.js:126:8)
+    at tryRender (E:\GitHub\NMStore\node_modules\express\lib\application.js:639:10)
+    at EventEmitter.render (E:\GitHub\NMStore\node_modules\express\lib\application.js:591:3)
+[Sat May 28 2016 00:20:02 GMT+0800 (中国标准时间)] /chat/u2s5
+Error: Can't set headers after they are sent.
+    at ServerResponse.OutgoingMessage.setHeader (_http_outgoing.js:346:11)
+    at ServerResponse.res.setHeader (E:\GitHub\NMStore\node_modules\connect\lib\patch.js:134:22)
+    at ServerResponse.header (E:\GitHub\NMStore\node_modules\express\lib\response.js:718:10)
+    at ServerResponse.contentType (E:\GitHub\NMStore\node_modules\express\lib\response.js:551:15)
+    at ServerResponse.send (E:\GitHub\NMStore\node_modules\express\lib\response.js:138:14)
+    at done (E:\GitHub\NMStore\node_modules\express\lib\response.js:957:10)
+    at View.exports.renderFile [as engine] (E:\GitHub\NMStore\node_modules\ejs\lib\ejs.js:355:10)
+    at View.render (E:\GitHub\NMStore\node_modules\express\lib\view.js:126:8)
+    at tryRender (E:\GitHub\NMStore\node_modules\express\lib\application.js:639:10)
+    at EventEmitter.render (E:\GitHub\NMStore\node_modules\express\lib\application.js:591:3)
+[Sat May 28 2016 00:20:19 GMT+0800 (中国标准时间)] /chat/u2s5
+Error: Can't set headers after they are sent.
+    at ServerResponse.OutgoingMessage.setHeader (_http_outgoing.js:346:11)
+    at ServerResponse.res.setHeader (E:\GitHub\NMStore\node_modules\connect\lib\patch.js:134:22)
+    at ServerResponse.header (E:\GitHub\NMStore\node_modules\express\lib\response.js:718:10)
+    at ServerResponse.contentType (E:\GitHub\NMStore\node_modules\express\lib\response.js:551:15)
+    at ServerResponse.send (E:\GitHub\NMStore\node_modules\express\lib\response.js:138:14)
+    at done (E:\GitHub\NMStore\node_modules\express\lib\response.js:957:10)
+    at View.exports.renderFile [as engine] (E:\GitHub\NMStore\node_modules\ejs\lib\ejs.js:355:10)
+    at View.render (E:\GitHub\NMStore\node_modules\express\lib\view.js:126:8)
+    at tryRender (E:\GitHub\NMStore\node_modules\express\lib\application.js:639:10)
+    at EventEmitter.render (E:\GitHub\NMStore\node_modules\express\lib\application.js:591:3)
