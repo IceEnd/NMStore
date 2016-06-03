@@ -46,7 +46,6 @@ router.get('/:id', function (req, res, next) {
                         content = result.content.split(';');
                     }  
                 }
-                console.log(content);
                 res.render('chat',{content:content,username:req.cookies.username});
             },function (error) {
                 res.render('error',{message:'404'});
