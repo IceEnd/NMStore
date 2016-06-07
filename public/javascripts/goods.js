@@ -18,6 +18,19 @@ $('#car_btn').click(function () {
         alert('请选择数目');
         return ;
     }
+    
+    if(parseInt($('#number').val()) < 0){
+        alert('商品数目不正确');
+        return ;
+    }
+    
+    if(parseInt($('#number').val()) > parseInt(($('#number').attr('max')))){
+        alert('超过库存');
+        return ;
+    }
+    
+    
+    
     if($.cookie('username') && $($.cookie('user_id'))){
         //用户已经登陆,mysql购物车
         var car ={};
@@ -93,6 +106,16 @@ $('#car_btn').click(function () {
 $('#buy_btn').click(function () {
     if($('#number').val() == 0){
         alert('请选择商品数目');
+        return ;
+    }
+    
+    if(parseInt($('#number').val()) < 0){
+        alert('商品数目不正确');
+        return ;
+    }
+    
+    if(parseInt($('#number').val()) > parseInt(($('#number').attr('max')))){
+        alert('超过库存');
         return ;
     }
     
